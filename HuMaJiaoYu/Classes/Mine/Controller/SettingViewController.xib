@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="juv-3f-usD">
+                    <rect key="frame" x="0.0" y="74" width="375" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="清理系统缓存" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uUe-cK-GvN">
+                            <rect key="frame" x="19" y="15" width="145" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="3wC-g3-eUb"/>
+                                <constraint firstAttribute="width" constant="145" id="Wxb-tb-GWk"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBi-lb-Xhq">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="ktf-QY-ajy"/>
+                            </constraints>
+                            <connections>
+                                <action selector="settingBtnClick:" destination="-1" eventType="touchUpInside" id="wjN-aA-DRz"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="L0C-t3-qvi"/>
+                        <constraint firstItem="uUe-cK-GvN" firstAttribute="top" secondItem="juv-3f-usD" secondAttribute="top" constant="15" id="RcV-nD-ZwP"/>
+                        <constraint firstItem="uUe-cK-GvN" firstAttribute="leading" secondItem="juv-3f-usD" secondAttribute="leading" constant="19" id="Tez-VV-4bR"/>
+                        <constraint firstAttribute="trailing" secondItem="NBi-lb-Xhq" secondAttribute="trailing" id="XRM-NU-N2R"/>
+                        <constraint firstItem="NBi-lb-Xhq" firstAttribute="leading" secondItem="juv-3f-usD" secondAttribute="leading" id="bP8-5P-qq9"/>
+                        <constraint firstItem="NBi-lb-Xhq" firstAttribute="top" secondItem="juv-3f-usD" secondAttribute="top" id="lUQ-Vj-zPn"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="juv-3f-usD" secondAttribute="trailing" id="h6Y-ZW-MSa"/>
+                <constraint firstItem="juv-3f-usD" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="74" id="r2W-rc-bY1"/>
+                <constraint firstItem="juv-3f-usD" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uFl-PB-QqB"/>
+            </constraints>
+            <point key="canvasLocation" x="37.5" y="155.5"/>
+        </view>
+    </objects>
+</document>

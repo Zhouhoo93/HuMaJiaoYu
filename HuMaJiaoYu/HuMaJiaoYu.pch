@@ -1,0 +1,58 @@
+//
+//  HuMaJiaoYu.pch
+//  HuMaJiaoYu
+//
+//  Created by Zhouhoo on 2017/7/24.
+//  Copyright © 2017年 xinyuntec. All rights reserved.
+//
+
+#ifndef HuMaJiaoYu_pch
+#define HuMaJiaoYu_pch
+#import "MBProgressHUD.h"
+#import "HSingleGlobalData.h"
+#import "AFNetworking.h"
+#define kUrl @"http://121.43.166.98"
+#import "MJRefresh.h"
+#define KWidth [UIScreen mainScreen].bounds.size.width
+#define KHeight [UIScreen mainScreen].bounds.size.height
+#define RGBColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+#define isValid(str) ((str!=nil) && (str!=NULL) && (![str isKindOfClass:[NSNull class]]))
+
+
+
+//// 判断是否为iOS8
+#define iOS8 ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0)
+//判断是什么型号的手机
+#define iPhone6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? (CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size) || CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size)) : NO)
+
+#define iPhone6P ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? (CGSizeEqualToSize(CGSizeMake(1125, 2001), [[UIScreen mainScreen] currentMode].size) || CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size)) : NO)
+//适配比例
+#define kWidthRate [[UIScreen mainScreen] bounds].size.width/320.0
+#define kHeighRate [[UIScreen mainScreen] bounds].size.height/568.0
+//判断是否 Retina屏、设备是否%fhone 5、是否是iPad
+#define iPhone4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iOS9 ([[UIDevice currentDevice].systemVersion doubleValue] >= 9.0)
+
+#ifdef DEBUG
+#define NSLog(FORMAT, ...) fprintf(stderr,"📌[%s:%d] %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else
+#define NSLog(FORMAT, ...) nil
+#endif
+
+
+
+//日志输出宏定义
+#ifdef DEBUG
+// 调试状态
+#define MyLog(...) NSLog(__VA_ARGS__)
+#else
+// 发布状态
+#define MyLog(...)
+#endif
+#endif
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+/* HuMaJiaoYu_pch */
