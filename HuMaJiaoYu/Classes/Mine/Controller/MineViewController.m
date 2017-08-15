@@ -307,9 +307,10 @@
                 NSString *tel = responseObject[@"content"][@"tel"];
                 self.phoneLabel.text = [NSString stringWithFormat:@"手机:%@",tel];
                 NSString *picURL = responseObject[@"content"][@"stu_pic"];
-                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
+                
                 //然后就是添加照片语句，这次不是`imageWithName`了，是 imageWithData。
-                if (data.length > 0) {
+                if (![picURL.class isEqual:[NSNull class]]) {
+                    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
                     self.touImage.image = [UIImage imageWithData:data];
                 }else{
                     self.touImage.image = [UIImage imageNamed:@"moren"];
@@ -321,9 +322,10 @@
                 NSString *tel = responseObject[@"content"][@"tel"];
                 self.phoneLabel.text = [NSString stringWithFormat:@"手机:%@",tel];
                 NSString *picURL = responseObject[@"content"][@"family_pic"];
-                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
+                
                 //然后就是添加照片语句，这次不是`imageWithName`了，是 imageWithData。
-                if (data.length > 0) {
+                if (![picURL.class isEqual:[NSNull class]]) {
+                    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
                     self.touImage.image = [UIImage imageWithData:data];
                 }else{
                     self.touImage.image = [UIImage imageNamed:@"moren"];

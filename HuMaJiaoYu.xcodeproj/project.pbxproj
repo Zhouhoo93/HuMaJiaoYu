@@ -1918,8 +1918,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = ASR2BXNM53;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = /Users/zhouhao/Documents/HuMaJiaoYu/HuMaJiaoYu/HuMaJiaoYu.pch;
-				HEADER_SEARCH_PATHS = /Users/zhouhao/Documents/HuMaJiaoYu/HuMaJiaoYu/Classes/FrameWork;
+				GCC_PREFIX_HEADER = /Users/zhouhao/Desktop/HuMaTeach/HuMaJiaoYu/HuMaJiaoYu.pch;
+				HEADER_SEARCH_PATHS = /Users/zhouhao/Desktop/HuMaTeach/HuMaJiaoYu/Classes/FrameWork;
 				INFOPLIST_FILE = HuMaJiaoYu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1940,8 +1940,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = ASR2BXNM53;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = /Users/zhouhao/Documents/HuMaJiaoYu/HuMaJiaoYu/HuMaJiaoYu.pch;
-				HEADER_SEARCH_PATHS = /Users/zhouhao/Documents/HuMaJiaoYu/HuMaJiaoYu/Classes/FrameWork;
+				GCC_PREFIX_HEADER = /Users/zhouhao/Desktop/HuMaTeach/HuMaJiaoYu/HuMaJiaoYu.pch;
+				HEADER_SEARCH_PATHS = /Users/zhouhao/Desktop/HuMaTeach/HuMaJiaoYu/Classes/FrameWork;
 				INFOPLIST_FILE = HuMaJiaoYu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

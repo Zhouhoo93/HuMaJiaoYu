@@ -254,7 +254,7 @@
     [parameters setValue:self.phoneNumTextField.text forKey:@"tel"];
     [parameters setValue:self.studentIDTextField.text forKey:@"stu_id"];
     [parameters setValue:self.relationshipBtn.titleLabel.text forKey:@"relationship"];
-    [parameters setValue:self.ClassID forKey:@"class"];
+    [parameters setValue:self.ClassID forKey:@"classes"];
 
     [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         

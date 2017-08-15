@@ -85,17 +85,39 @@
                 [MBProgressHUD showText:str];
                 }
             }else{
-                for (NSDictionary *dic in responseObject[@"content"]) {
-                    _familyMineModel = [[FamilyMineModel alloc] initWithDictionary:dic];
-                    [self.dataArray addObject:_familyMineModel];
+                if([type isEqualToString:@"学生"]){
+                    for (NSDictionary *dic in responseObject[@"content"]) {
+                        _familyMineModel = [[FamilyMineModel alloc] initWithDictionary:dic];
+                        [self.dataArray addObject:_familyMineModel];
+                    }
+                    self.userNameLabel.text = self.familyMineModel.username;
+                    self.familyNameLabel.text = _familyMineModel.family_name;
+                    self.phoneLabel.text = _familyMineModel.tel;
+                    NSArray *dic = _familyMineModel.has_many_stu;
+                    NSLog(@"%@",dic);
+                    self.studentID.text = dic[0][@"stu_id"];
+                    self.realitionLabel.text = dic[0][@"relationship"];
+                }else if([type isEqualToString:@"家长"]){
+                    for (NSDictionary *dic in responseObject[@"content"]) {
+                        _familyMineModel = [[FamilyMineModel alloc] initWithDictionary:dic];
+                        [self.dataArray addObject:_familyMineModel];
+                    }
+                    self.userNameLabel.text = self.familyMineModel.username;
+                    self.familyNameLabel.text = _familyMineModel.family_name;
+                    self.phoneLabel.text = _familyMineModel.tel;
+                    NSArray *dic = _familyMineModel.has_many_stu;
+                    NSLog(@"%@",dic);
+                    NSString *stuID =dic[0][@"stu_id"];
+                    NSString *relationship =dic[0][@"relationship"];
+                    if (![stuID.class isEqual:[NSNull class]]) {
+                        self.studentID.text = dic[0][@"stu_id"];
+                    }
+                    if (![relationship.class isEqual:[NSNull class]]) {
+                        self.realitionLabel.text = dic[0][@"relationship"];
+                    }
                 }
-                self.userNameLabel.text = self.familyMineModel.username;
-                self.familyNameLabel.text = _familyMineModel.family_name;
-                self.phoneLabel.text = _familyMineModel.tel;
-                NSArray *dic = _familyMineModel.has_many_stu;
-                NSLog(@"%@",dic);
-                self.studentID.text = dic[0][@"stu_id"];
-                self.realitionLabel.text = dic[0][@"relationship"];
+
+                
     
             }
         
