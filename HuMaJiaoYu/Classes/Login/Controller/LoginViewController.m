@@ -137,6 +137,7 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *regis = [userDefaults valueForKey:@"registerid"];
     [parameters setValue:regis forKey:@"register_id"];
+//     [parameters setValue:@"12312312312312" forKey:@"register_id"];
     NSLog(@"登陆参数:%@",parameters);
     [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         

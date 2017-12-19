@@ -13,6 +13,7 @@
 #import "LightPlanModel.h"
 #import "LightQingJingModel.h"
 #import "LoginViewController.h"
+#import "LightLishiViewController.h"
 @interface LightViewController ()<ASValueTrackingSliderDataSource,JHPickerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
@@ -89,6 +90,7 @@
         self.slidertwo.enabled = NO;
         [MBProgressHUD showText:@"无权限控制"];
     }
+    
 
 }
 
@@ -189,7 +191,7 @@
             }
             }else{
                 [MBProgressHUD showText:@"当前教室没有硬件"];
-                [self.navigationController popViewControllerAnimated:YES];
+//                [self.navigationController popViewControllerAnimated:YES];
 
             }
         }
@@ -603,6 +605,10 @@
         _lightqingjingModel = [[LightQingJingModel alloc] init];
     }
     return _lightqingjingModel;
+}
+- (IBAction)midBtnClick:(id)sender {
+    LightLishiViewController *vc = [[LightLishiViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 /*
 #pragma mark - Navigation

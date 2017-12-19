@@ -9,6 +9,8 @@
 #import "ReleaseViewController.h"
 
 @interface ReleaseViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *titleText;
+@property (weak, nonatomic) IBOutlet UITextView *MidText;
 
 @end
 
@@ -26,7 +28,10 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.titleText resignFirstResponder];
+    [self.MidText resignFirstResponder];
+}
 /*
 #pragma mark - Navigation
 

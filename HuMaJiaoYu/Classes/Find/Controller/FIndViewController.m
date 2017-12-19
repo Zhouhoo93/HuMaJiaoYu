@@ -24,6 +24,8 @@ static NSString * const cellIdentifier = @"cellIdentifier";
 @property (nonatomic,assign)int page;
 @property (nonatomic,strong) NSMutableArray *dataArray;
 @property (nonatomic,strong)FindModel *findModel;
+@property (nonatomic,strong) UIView *topView;
+@property (nonatomic,strong) searchview *headerview;
 @end
 
 @implementation FIndViewController
@@ -53,14 +55,14 @@ static NSString * const cellIdentifier = @"cellIdentifier";
     // Dispose of any resources that can be recreated.
 }
 - (void)setUI{
-    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KWidth, 66)];
-    searchview *headerview = [[NSBundle mainBundle]loadNibNamed:@"searchview" owner:self options:nil][0];
-    headerview.searchtextfield.delegate = self;
-    [topView addSubview:headerview];
-    [self.view addSubview:topView];
+    self.topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KWidth, 66)];
+    self.headerview = [[NSBundle mainBundle]loadNibNamed:@"searchview" owner:self options:nil][0];
+    self.headerview.searchtextfield.delegate = self;
+    [self.topView addSubview:self.headerview];
+    [self.view addSubview:self.topView];
 //    topView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
     
-    [self.view addSubview:topView];
+    [self.view addSubview:self.topView];
     
     self.table = [[UITableView alloc] initWithFrame:CGRectMake(0,64 , KWidth, KHeight-64) style:UITableViewStylePlain];
     self.table.delegate = self;
@@ -91,6 +93,7 @@ static NSString * const cellIdentifier = @"cellIdentifier";
 
 -(void)textFieldDidEndEditing:(UITextField *)textField{
     NSLog(@"%@",textField.text);
+    [textField resignFirstResponder];
 }
 
 
@@ -210,6 +213,7 @@ static NSString * const cellIdentifier = @"cellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.headerview.searchtextfield resignFirstResponder];
 //    DisViewController *vc = [[DisViewController alloc] init];
 //    vc.hidesBottomBarWhenPushed = YES;
 //    _model = _dataArr[indexPath.row];
@@ -307,5 +311,8 @@ static NSString * const cellIdentifier = @"cellIdentifier";
         _findModel = [[FindModel alloc] init];
     }
     return _findModel;
+}
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.headerview.searchtextfield resignFirstResponder];
 }
 @end

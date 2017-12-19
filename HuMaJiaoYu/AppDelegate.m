@@ -35,21 +35,21 @@
         // NSSet<UIUserNotificationCategory *> *categories for iOS8 and iOS9
     }
     [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
-    
-    // Optional
-    // 获取IDFA
-    // 如需使用IDFA功能请添加此代码并在初始化方法的advertisingIdentifier参数中填写对应值
+//
+//    // Optional
+//    // 获取IDFA
+//    // 如需使用IDFA功能请添加此代码并在初始化方法的advertisingIdentifier参数中填写对应值
     NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    
-    // Required
-    // init Push
-    // notice: 2.1.5版本的SDK新增的注册方法，改成可上报IDFA，如果没有使用IDFA直接传nil
-    // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
+//
+//    // Required
+//    // init Push
+//    // notice: 2.1.5版本的SDK新增的注册方法，改成可上报IDFA，如果没有使用IDFA直接传nil
+//    // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
     [JPUSHService setupWithOption:launchOptions appKey:@"7fc5bd4fe89d07e9b73e0290"
                           channel:@"App Store"
                  apsForProduction:@"0"
             advertisingIdentifier:advertisingId];
-    
+
     //通知获取registerID
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
@@ -62,7 +62,7 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *passName = [userDefaults valueForKey:@"phone"];
 //    NSString *passWord =[userDefaults valueForKey:@"passWord"];
-    
+
     if (passName.length>0) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UITabBarController *baseNaviVC = [storyboard instantiateViewControllerWithIdentifier:@"Main"];
@@ -93,8 +93,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 }
 
 #pragma mark- JPUSHRegisterDelegate
-
-// iOS 10 Support
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
     // Required
     NSDictionary * userInfo = notification.request.content.userInfo;
@@ -103,6 +101,15 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     }
     completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
 }
+// iOS 10 Support
+//- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
+//    // Required
+////    NSDictionary * userInfo = notification.request.content.userInfo;
+////    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+////        [JPUSHService handleRemoteNotification:userInfo];
+////    }
+////    completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
+//}
 
 // iOS 10 Support
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
@@ -130,31 +137,31 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)networkDidLogin:(NSNotification *)notification {
     
     NSLog(@"已登录");
-    if ([JPUSHService registrationID]) {
-        
-        //下面是我拿到registeID,发送给服务器的代码，可以根据你需求来处理
-        NSString *registerid = [JPUSHService registrationID];
-        NSLog(@"APPDelegate开始上传rgeisterID");
-        [HSingleGlobalData sharedInstance].registerid = registerid;
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setValue:registerid forKey:@"registerid"];
-        [userDefaults synchronize];
-        MyLog(@"*******get RegistrationID = %@ ",[JPUSHService registrationID]);
-        //    }
-        //设置jPUsh 别名
-        //    NSString *userID = [HSingleGlobalData sharedInstance].passName;
-        //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [JPUSHService setTags:nil alias:registerid fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
-            NSLog(@"%d----%@---",iResCode,iAlias);
-            
-        }];
-        [JPUSHService setAlias:registerid callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:nil];
-        //    });
-        NSLog(@"设置别名:%@",registerid);
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:kJPFNetworkDidLoginNotification
-                                                      object:nil];
-    }
+//    if ([JPUSHService registrationID]) {
+//        
+//        //下面是我拿到registeID,发送给服务器的代码，可以根据你需求来处理
+//        NSString *registerid = [JPUSHService registrationID];
+//        NSLog(@"APPDelegate开始上传rgeisterID");
+//        [HSingleGlobalData sharedInstance].registerid = registerid;
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults setValue:registerid forKey:@"registerid"];
+//        [userDefaults synchronize];
+//        MyLog(@"*******get RegistrationID = %@ ",[JPUSHService registrationID]);
+//        //    }
+//        //设置jPUsh 别名
+//        //    NSString *userID = [HSingleGlobalData sharedInstance].passName;
+//        //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [JPUSHService setTags:nil alias:registerid fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
+//            NSLog(@"%d----%@---",iResCode,iAlias);
+//            
+//        }];
+//        [JPUSHService setAlias:registerid callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:nil];
+//        //    });
+//        NSLog(@"设置别名:%@",registerid);
+//        [[NSNotificationCenter defaultCenter] removeObserver:self
+//                                                        name:kJPFNetworkDidLoginNotification
+//                                                      object:nil];
+//    }
 }
 
 

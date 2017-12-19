@@ -14,6 +14,7 @@
 #import "LightPlanModel.h"
 #import "LightQingJingModel.h"
 #import "LoginViewController.h"
+#import "WenDuLishiViewController.h"
 @interface PurifyControlViewController ()<JHPickerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
@@ -387,7 +388,7 @@
 
             }else{
                 [MBProgressHUD showText:@"当前教室没有硬件"];
-                [self.navigationController popViewControllerAnimated:YES];
+//                [self.navigationController popViewControllerAnimated:YES];
             }
             
         }
@@ -458,6 +459,78 @@
         _lightplanModel = [[LightPlanModel alloc] init];
     }
     return _lightplanModel;
+}
+- (IBAction)wenduBtnClick:(id)sender {
+    WenDuLishiViewController *vc = [[WenDuLishiViewController alloc] init];
+    vc.leftLabel.text = @"当前温度";
+    NSString *str= self.locationLabel.titleLabel.text;
+    vc.RightBtn1.titleLabel.text = str;
+    vc.charttip1 = @"教室温度";
+    vc.charttip2 = @"一周平均温度";
+    vc.chartleft1 = @"℃";
+    vc.chartleft2 = @"℃";
+    vc.chartright1 = @"温度";
+    vc.chartright2 = @"温度";
+    vc.index = 0;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)tvocBtnClick:(id)sender {
+    WenDuLishiViewController *vc = [[WenDuLishiViewController alloc] init];
+    vc.leftLabel.text = @"TVOC含量";
+    NSString *str= self.locationLabel.titleLabel.text;
+    vc.RightBtn1.titleLabel.text = str;
+    vc.leftLabel.text = @"";
+    vc.charttip1 = @"教室TVOC值";
+    vc.charttip2 = @"一周平均TVOC值";
+    vc.chartleft1 = @"mg/m³";
+    vc.chartleft2 = @"mg/m³";
+    vc.chartright1 = @"TVOC含量";
+    vc.chartright2 = @"TVOC含量";
+    vc.index = 1;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)shiduBtnClick:(id)sender {
+    WenDuLishiViewController *vc = [[WenDuLishiViewController alloc] init];
+    vc.leftLabel.text = @"当前湿度";
+    NSString *str= self.locationLabel.titleLabel.text;
+    vc.RightBtn1.titleLabel.text = str;
+    vc.leftLabel.text = @"";
+    vc.charttip1 = @"教室湿度";
+    vc.charttip2 = @"一周平均湿度";
+    vc.chartleft1 = @"%";
+    vc.chartleft2 = @"%";
+    vc.chartright1 = @"湿度";
+    vc.chartright2 = @"湿度";
+    vc.index = 2;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)PMBtnClick:(id)sender {
+    WenDuLishiViewController *vc = [[WenDuLishiViewController alloc] init];
+    vc.leftLabel.text = @"PM2.5值";
+    NSString *str= self.locationLabel.titleLabel.text;
+    vc.RightBtn1.titleLabel.text = str;
+    vc.charttip1 = @"教室PM2.5值";
+    vc.charttip2 = @"一周平均PM2.5值";
+    vc.chartleft1 = @"mg/m³";
+    vc.chartleft2 = @"mg/m³";
+    vc.chartright1 = @"PM2.5值";
+    vc.chartright2 = @"PM2.5值";
+    vc.index = 3;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)co2BtnClick:(id)sender {
+    WenDuLishiViewController *vc = [[WenDuLishiViewController alloc] init];
+    vc.leftLabel.text = @"CO2值";
+    NSString *str= self.locationLabel.titleLabel.text;
+    vc.RightBtn1.titleLabel.text = str;
+    vc.charttip1 = @"教室CO2值";
+    vc.charttip2 = @"一周平均CO2值";
+    vc.chartleft1 = @"ppm";
+    vc.chartleft2 = @"ppm";
+    vc.chartright1 = @"CO2值";
+    vc.chartright2 = @"CO2值";
+    vc.index = 4;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 /*
 #pragma mark - Navigation

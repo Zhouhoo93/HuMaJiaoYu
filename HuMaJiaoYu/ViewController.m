@@ -78,7 +78,7 @@
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, 70, 30)];
     [leftButton setImage:[UIImage imageNamed:@"加号"] forState:UIControlStateNormal];
-    [leftButton setTitle:@"  幼儿园" forState:UIControlStateNormal];
+//    [leftButton setTitle:@"  幼儿园" forState:UIControlStateNormal];
     [leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [blueView addSubview:leftButton];
     
@@ -298,6 +298,8 @@
         vc.hidesBottomBarWhenPushed = YES;
         vc.type = @"净化器";
         [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        [MBProgressHUD showText:@"暂未开放"];
     }
 }
 
