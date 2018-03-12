@@ -121,19 +121,19 @@
 #pragma mark - 验证账号密码
 //验证账号密码
 - (void)requestPassWord {
-    NSString *URL = [NSString stringWithFormat:@"%@/app-login",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/login",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    if ([self.selectbtn.titleLabel.text isEqualToString:@"学生"]) {
-        [parameters setValue:@"students" forKey:@"type"];
-    }else if([self.selectbtn.titleLabel.text isEqualToString:@"家长"]){
-        [parameters setValue:@"family" forKey:@"type"];
-    }else{
-        [parameters setValue:@"teacher" forKey:@"type"];
-    }
+//    if ([self.selectbtn.titleLabel.text isEqualToString:@"学生"]) {
+//        [parameters setValue:@"students" forKey:@"type"];
+//    }else if([self.selectbtn.titleLabel.text isEqualToString:@"家长"]){
+//        [parameters setValue:@"family" forKey:@"type"];
+//    }else{
+//        [parameters setValue:@"teacher" forKey:@"type"];
+//    }
     [parameters setValue:self.PassNameText.text forKey:@"username"];
-    [parameters setValue:self.PassWordText.text forKey:@"pwd"];
+    [parameters setValue:self.PassWordText.text forKey:@"password"];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *regis = [userDefaults valueForKey:@"registerid"];
     [parameters setValue:regis forKey:@"register_id"];
@@ -144,19 +144,31 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"正确%@",responseObject);
-        if([responseObject[@"result"][@"success"] intValue] ==1){
-            NSString *token = [NSString stringWithFormat:@"%@",responseObject[@"content"]];
+        if([responseObject[@"code"] intValue] ==0){
+            NSString *token = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"token"]];
+            NSString *schoolID = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"me"][@"school_id"]];
+            NSString *name = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"me"][@"name"]];
+            NSString *phone = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"me"][@"phone"]];
+            NSString *username = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"me"][@"username"]];
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setValue:self.PassWordText.text forKey:@"password"];
-            [userDefaults setValue:self.PassNameText.text forKey:@"phone"];
+            [userDefaults setValue:self.PassNameText.text forKey:@"username"];
+            [userDefaults setValue:schoolID forKey:@"schoolID"];
             [userDefaults setValue:token forKey:@"token"];
+            [userDefaults setValue:name forKey:@"name"];
+            [userDefaults setValue:username forKey:@"username"];
+            [userDefaults setValue:phone forKey:@"phone"];
             [userDefaults synchronize];
 
             [self goHomeController];
                         
         }else{
-            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"result"][@"errorMsg"]]];
-            NSLog(@"%@",responseObject[@"result"][@"errorMsg"]);
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text =responseObject[@"msg"];
+            [hud hideAnimated:YES afterDelay:2.f];
+//            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"result"][@"errorMsg"]]];
+//            NSLog(@"%@",responseObject[@"result"][@"errorMsg"]);
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

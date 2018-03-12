@@ -70,7 +70,9 @@
     [imageView addSubview:_touImage];
     
     self.nameBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 150, KWidth, 25)];
-    [self.nameBtn setTitle:@"未设定昵称" forState:UIControlStateNormal];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *name = [userDefaults valueForKey:@"name"];
+    [self.nameBtn setTitle:name forState:UIControlStateNormal];
     [self.nameBtn setImage:[UIImage imageNamed:@"个人中心编辑"] forState:UIControlStateNormal];
     [self.nameBtn setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
     CGFloat imageWidth = self.nameBtn.imageView.bounds.size.width;
@@ -85,7 +87,8 @@
     //
     _phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(KWidth/2-70, 180,140, 25)];
     _phoneLabel.numberOfLines = 0;
-    _phoneLabel.text = @"手机:";
+    NSString *phone = [userDefaults valueForKey:@"phone"];
+    _phoneLabel.text = [NSString stringWithFormat:@"手机:%@",phone];
     _phoneLabel.textAlignment = NSTextAlignmentCenter;
     _phoneLabel.textColor = [UIColor whiteColor];
     _phoneLabel.font = [UIFont systemFontOfSize:13];
@@ -300,9 +303,14 @@
             [MBProgressHUD showText:str];
             }
         }else{
-
+            if([responseObject[@"content"] isEqual:[NSNull null]])
+            {
+                
+            }else{
             if([type isEqualToString:@"学生"]){
-                NSString *nameText = responseObject[@"content"][@"stu_name"];
+                
+                NSString *stuname = [NSString stringWithFormat:@"%@",responseObject[@"content"][@"stu_name"]];
+                NSString *nameText = stuname;
                 [self.nameBtn setTitle:nameText forState:UIControlStateNormal];
                 NSString *tel = responseObject[@"content"][@"tel"];
                 self.phoneLabel.text = [NSString stringWithFormat:@"手机:%@",tel];
@@ -345,6 +353,7 @@
                     self.touImage.image = [UIImage imageNamed:@"moren"];
                 }
 
+            }
             }
             
         }

@@ -42,6 +42,7 @@
 @property (nonatomic,strong)ClassModel *classModel;
 @property (nonatomic,strong)NSMutableArray *ClassArr;
 @property (nonatomic,copy)NSString *ClassID;
+@property (nonatomic,copy)NSString *guanxi;
 @end
 
 @implementation StudentRegisterViewController
@@ -73,7 +74,7 @@
     NSMutableArray *gradeArrTwo = [[NSMutableArray alloc] initWithCapacity:0];
     for (int i=0; i<self.gradeArr.count; i++) {
         self.gradeModel = self.gradeArr[i];
-        [gradeArrTwo addObject:self.gradeModel.grade_alias];
+        [gradeArrTwo addObject:self.gradeModel.alias];
     }
     
     JHPickView *picker = [[JHPickView alloc]initWithFrame:self.view.bounds];
@@ -88,7 +89,7 @@
     NSMutableArray *gradeArrThree = [[NSMutableArray alloc] initWithCapacity:0];
     for (int i=0; i<self.ClassArr.count; i++) {
         self.classModel = self.ClassArr[i];
-        [gradeArrThree addObject:self.classModel.class_alias];
+        [gradeArrThree addObject:self.classModel.alias];
     }
 
     JHPickView *picker = [[JHPickView alloc]initWithFrame:self.view.bounds];
@@ -118,7 +119,11 @@
         [self.gradeBtn setTitle:str forState:UIControlStateNormal];
         _gradeModel = _gradeArr[row];
         self.gradeID = _gradeModel.ID;
-        [self requestClass];
+//        [self requestClass];
+        for (NSDictionary *goodsDic in self.gradeModel.classrooms) {
+            self.classModel =[[ClassModel alloc] initWithDictionary:goodsDic];
+            [self.ClassArr addObject:self.classModel];
+        }
     }else if (self.selectedIndexPath==2) {
         [self.classBtn setTitle:str forState:UIControlStateNormal];
         _classModel = _ClassArr[row];
@@ -172,16 +177,19 @@
     {
         NSLog(@"点击了学生按钮");
         [self.relationshipBtn setTitle:@"父子" forState:0];
+        self.guanxi = @"1";
     }
     else if (1 == buttonIndex)
     {
         NSLog(@"点击了家长按钮");
         [self.relationshipBtn setTitle:@"母子" forState:0];
+        self.guanxi = @"2";
     }
     else if (2 == buttonIndex)
     {
         NSLog(@"点击了教师按钮");
-        [self.relationshipBtn setTitle:@"爷孙" forState:0];
+        [self.relationshipBtn setTitle:@"其他" forState:0];
+        self.guanxi = @"3";
     }else if (3 == buttonIndex)
     {
         NSLog(@"点击了取消按钮");
@@ -191,7 +199,7 @@
 
 -(void)setSelect{
     self.dataArr = [NSMutableArray array];
-    NSArray *arr = @[@{@"name":@"父子"},@{@"name":@"母子"},@{@"name":@"爷孙"},@{@"name":@"叔侄"},@{@"name":@"其他"}];
+    NSArray *arr = @[@{@"name":@"父子"},@{@"name":@"母子"},@{@"name":@"其他"}];
     for (NSDictionary *dic in arr) {
         [_dataArr addObject:[PopModel modelWithdic:dic]];
     }
@@ -208,16 +216,20 @@
 }
 
 - (void)requestGrade{
-    NSString *URL = [NSString stringWithFormat:@"%@/select-grade",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/grades",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
-    [manager POST:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSString *schoolID = [ user objectForKey:@"schoolID"];
+    [parameters setValue:schoolID forKey:@"school_id"];
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"查询年级正确%@",responseObject);
-        if([responseObject[@"result"][@"success"] intValue] ==1){
-            for (NSDictionary *goodsDic in responseObject[@"content"]) {
+        if([responseObject[@"code"] intValue] ==0){
+            for (NSDictionary *goodsDic in responseObject[@"data"]) {
                self.gradeModel =[[GradeModel alloc] initWithDictionary:goodsDic];
                 [self.gradeArr addObject:self.gradeModel];
             }
@@ -247,7 +259,7 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"查询班级正确%@",responseObject);
         if([responseObject[@"result"][@"success"] intValue] ==1){
-            for (NSDictionary *goodsDic in responseObject[@"content"]) {
+            for (NSDictionary *goodsDic in self.gradeModel.classrooms) {
             self.classModel =[[ClassModel alloc] initWithDictionary:goodsDic];
             [self.ClassArr addObject:self.classModel];
         }
@@ -267,48 +279,60 @@
 
 //验证账号密码
 - (void)requestPassWord {
-    NSString *URL = [NSString stringWithFormat:@"%@/stu-register",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/register",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:self.userNameTextField.text forKey:@"username"];
-    [parameters setValue:@"1" forKey:@"num"];
-    [parameters setValue:self.passWordTextField.text forKey:@"pwd"];
-    [parameters setValue:self.studentNameTextField.text forKey:@"stu_name"];
+    [parameters setValue:self.schoolCode forKey:@"school_invited_code"];
+    [parameters setValue:@"1" forKey:@"type"];
+    [parameters setValue:self.passWordTextField.text forKey:@"password"];
+    [parameters setValue:self.studentNameTextField.text forKey:@"name"];
     if ([self.sexBtn.titleLabel.text isEqualToString:@"男"]) {
          [parameters setValue:@"1" forKey:@"sex"];
     }else{
-        [parameters setValue:@"0" forKey:@"sex"];
+        [parameters setValue:@"2" forKey:@"sex"];
     }
-    [parameters setValue:self.ClassID forKey:@"class"];
-    [parameters setValue:self.studentIDTextField.text forKey:@"stu_id"];
+//    [parameters setValue:self.gradeID forKey:@"classroom_id"];
+    [parameters setValue:self.ClassID forKey:@"classroom_id"];
+    [parameters setValue:self.studentIDTextField.text forKey:@"no"];
     NSString *birStr = self.birthdayBtn.titleLabel.text;
     
     NSString *str1 = [birStr stringByReplacingOccurrencesOfString:@"年" withString:@"-"];
     NSString *str2 = [str1 stringByReplacingOccurrencesOfString:@"月" withString:@"-"];
     NSString *str3 = [str2 stringByReplacingOccurrencesOfString:@"日" withString:@""];
-    [parameters setValue:str3 forKey:@"birth"];
-    [parameters setValue:self.phoneTextField.text forKey:@"tel"];
-    [parameters setValue:self.addresstEXTfIELD.text forKey:@"addr"];
-    [parameters setValue:self.emergencyManTextField.text forKey:@"family_name"];
-    [parameters setValue:self.emergencyPhoneTextField.text forKey:@"family_tel"];
-    [parameters setValue:self.relationshipBtn.titleLabel.text forKey:@"relationship"];
+    [parameters setValue:str3 forKey:@"birthday"];
+    [parameters setValue:self.phoneTextField.text forKey:@"phone"];
+    [parameters setValue:self.addresstEXTfIELD.text forKey:@"address"];
+//    [parameters setValue:self.emergencyManTextField.text forKey:@"family_name"];
+//    [parameters setValue:self.emergencyPhoneTextField.text forKey:@"family_tel"];
+    [parameters setValue:self.guanxi forKey:@"family_type"];
     NSLog(@"参数:%@",parameters);
     [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"正确%@",responseObject);
-        if([responseObject[@"result"][@"success"] intValue] ==1){
+        if([responseObject[@"code"] intValue] ==0){
             [MBProgressHUD showText:@"注册成功"];
+            NSString *token = responseObject[@"data"][@"token"];
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setObject:token forKey:@"token"];
+//            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [user setValue:self.passWordTextField.text forKey:@"password"];
+            [user setValue:self.userNameTextField.text forKey:@"username"];
+//            [userDefaults setValue:token forKey:@"token"];
+            [user synchronize];
+            
+            
             LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
             loginViewController.navigationController.navigationBar.hidden = YES;
             [self.navigationController pushViewController:loginViewController animated:YES];
             
             
         }else{
-            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"result"][@"errorMsg"]]];
-            NSLog(@"%@",responseObject[@"result"][@"errorMsg"]);
+            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
+            NSLog(@"%@",responseObject[@"msg"]);
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

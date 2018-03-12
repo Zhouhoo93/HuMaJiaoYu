@@ -26,6 +26,7 @@
 //    self.title = @"学校信息";
     self.page = 1;
     [self requestData];
+    self.title = @"发现";
     [self setUI];
     // Do any additional setup after loading the view.
 }
@@ -84,10 +85,10 @@
     
 }
 -(void)requestData{
-    NSString *URL = [NSString stringWithFormat:@"%@/selectAppfind",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/app-posts",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    NSString *token = [userDefaults valueForKey:@"token"];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *schoolID = [userDefaults valueForKey:@"schoolID"];
 //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -95,22 +96,23 @@
     //    [parameters setValue:@"文章id" forKey:@"id"];
     NSString *page = [NSString stringWithFormat:@"%d",self.page];
     [parameters setValue:page forKey:@"page"];
+    [parameters setValue:schoolID forKey:@"school_id"];
     
     NSLog(@"%@",parameters);
-    [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取文章正确%@",responseObject);
 
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
+        if ([responseObject[@"code"] intValue] !=0) {
             NSNumber *code = responseObject[@"result"][@"errorCode"];
             NSString *errorcode = [NSString stringWithFormat:@"%@",code];
             if ([errorcode isEqualToString:@"4200"])  {
                 [MBProgressHUD showText:@"请重新登陆"];
                 [self newLogin];
             }else{
-            NSString *str = responseObject[@"result"][@"errorMsg"];
+            NSString *str = responseObject[@"msg"];
             [MBProgressHUD showText:str];
             }
         }else{
@@ -123,7 +125,7 @@
             }else{
                 self.page--;
             }
-            for (NSDictionary *dic in responseObject[@"content"]) {
+            for (NSDictionary *dic in responseObject[@"data"][@"data"]) {
                 _noticeModel = [[NoticeModel alloc] initWithDictionary:dic];
                 [self.dataArr addObject:_noticeModel];
             }

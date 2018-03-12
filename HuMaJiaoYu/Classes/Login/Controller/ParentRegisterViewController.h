@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ParentRegisterViewController : UIViewController
-
+@property (nonatomic,copy)NSString *schoolCode;
 @end

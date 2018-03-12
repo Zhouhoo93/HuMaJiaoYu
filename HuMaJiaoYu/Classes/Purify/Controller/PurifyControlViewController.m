@@ -122,10 +122,6 @@
         self.bid = _lightplanModel.ID;
         self.fanganLabel.text = str;
         [self SendPlan];
-    }else if (self.selectedIndexPath==2) {
-        
-    }else if (self.selectedIndexPath==3) {
-        
     }
     
     

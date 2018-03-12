@@ -137,31 +137,31 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)networkDidLogin:(NSNotification *)notification {
     
     NSLog(@"已登录");
-//    if ([JPUSHService registrationID]) {
-//        
-//        //下面是我拿到registeID,发送给服务器的代码，可以根据你需求来处理
-//        NSString *registerid = [JPUSHService registrationID];
-//        NSLog(@"APPDelegate开始上传rgeisterID");
-//        [HSingleGlobalData sharedInstance].registerid = registerid;
-//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//        [userDefaults setValue:registerid forKey:@"registerid"];
-//        [userDefaults synchronize];
-//        MyLog(@"*******get RegistrationID = %@ ",[JPUSHService registrationID]);
-//        //    }
-//        //设置jPUsh 别名
-//        //    NSString *userID = [HSingleGlobalData sharedInstance].passName;
-//        //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [JPUSHService setTags:nil alias:registerid fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
-//            NSLog(@"%d----%@---",iResCode,iAlias);
-//            
-//        }];
-//        [JPUSHService setAlias:registerid callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:nil];
-//        //    });
-//        NSLog(@"设置别名:%@",registerid);
-//        [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                        name:kJPFNetworkDidLoginNotification
-//                                                      object:nil];
-//    }
+    if ([JPUSHService registrationID]) {
+        
+        //下面是我拿到registeID,发送给服务器的代码，可以根据你需求来处理
+        NSString *registerid = [JPUSHService registrationID];
+        NSLog(@"APPDelegate开始上传rgeisterID");
+        [HSingleGlobalData sharedInstance].registerid = registerid;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setValue:registerid forKey:@"registerid"];
+        [userDefaults synchronize];
+        MyLog(@"*******get RegistrationID = %@ ",[JPUSHService registrationID]);
+        //    }
+        //设置jPUsh 别名
+        //    NSString *userID = [HSingleGlobalData sharedInstance].passName;
+        //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [JPUSHService setTags:nil alias:registerid fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
+            NSLog(@"%d----%@---",iResCode,iAlias);
+            
+        }];
+        [JPUSHService setAlias:registerid callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:nil];
+        //    });
+        NSLog(@"设置别名:%@",registerid);
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:kJPFNetworkDidLoginNotification
+                                                      object:nil];
+    }
 }
 
 

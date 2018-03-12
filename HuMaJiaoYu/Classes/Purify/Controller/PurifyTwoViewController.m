@@ -22,6 +22,8 @@
 @property (nonatomic,strong) NSMutableArray *lightqingjingArr;
 @property (assign,nonatomic) NSInteger* selectedIndexPath ;
 @property (nonatomic,copy) NSString *ID;
+@property (nonatomic,copy) NSString *device_on;
+@property (nonatomic,copy) NSString *runmodel;
 @property (nonatomic,strong)PurifyModel *model;
 @property (nonatomic,strong) NSMutableArray *dataArr;
 @end
@@ -36,7 +38,7 @@
     [self requestData];
     [self requestqingjing];
     [self requestFangan];
-
+    self.runmodel = @"1";
     self.locationLabel.text = self.location;
     self.qingjingLabel.text = self.qingjing;
     self.fanganLabel.text = self.fangan;
@@ -69,6 +71,7 @@
             self.oneSpeedBtn.enabled = YES;
             self.twoSpeedBtn.enabled = YES;
             self.threeSpeedBtn.enabled = YES;
+            self.runmodel = @"0";
         }else{
             sender.selected = YES;
             self.UVlightONBtn.selected = YES;
@@ -81,7 +84,7 @@
             self.twoSpeedBtn.selected = NO;
             self.threeSpeedBtn.selected = YES;
             self.wind_speed = @"3";
-//            [self SendData];
+            [self SendData];
             self.UVlightONBtn.enabled = NO;
             self.UVLightOffBtn.enabled = NO;
             self.changgeOnBtn.enabled = NO;
@@ -89,6 +92,7 @@
             self.oneSpeedBtn.enabled = NO;
             self.twoSpeedBtn.enabled = NO;
             self.threeSpeedBtn.enabled = NO;
+            self.runmodel = @"1";
         }
         
     }else {
@@ -181,7 +185,7 @@
 
 
 - (void)setButton{
-    _filter = [[SEFilterControl alloc]initWithFrame:CGRectMake(0,0 , self.buttonView.frame.size.width, 15) Titles:[NSArray arrayWithObjects:@"0档", @"1档", @"2档", @"3档",@"4档",@"5档",@"6档", nil]];
+    _filter = [[SEFilterControl alloc]initWithFrame:CGRectMake(0,0 , self.buttonView.frame.size.width, 15) Titles:[NSArray arrayWithObjects:@"0档", @"1档", @"2档", @"3档",@"4档",@"5档", nil]];
     [_filter addTarget:self action:@selector(filterValueChanged:) forControlEvents:UIControlEventTouchUpInside];
     [_filter setProgressColor:[UIColor groupTableViewBackgroundColor]];//设置滑杆的颜色
     [_filter setTopTitlesColor:[UIColor orangeColor]];//设置滑块上方字体颜色
@@ -193,7 +197,7 @@
 -(void)filterValueChanged:(SEFilterControl *)sender
 {
     NSLog(@"当前滑块位置%d",sender.SelectedIndex);
-    NSInteger num = sender.SelectedIndex/2*3;
+    NSInteger num = sender.SelectedIndex;
     self.wind_speed = [NSString stringWithFormat:@"%d",num];
     [self SendData];
 
@@ -348,6 +352,7 @@
             self.twoSpeedBtn.selected = NO;
             self.threeSpeedBtn.selected = YES;
             self.wind_speed = @"3";
+            self.runmodel = @"0";
             [self SendData];
         }
         
@@ -375,6 +380,7 @@
             self.twoSpeedBtn.selected = NO;
             self.threeSpeedBtn.selected = NO;
             self.wind_speed = @"0";
+            self.runmodel = @"0";
             [self SendData];
         }
         
@@ -504,11 +510,19 @@
             NSString *str = responseObject[@"result"][@"errorMsg"];
             [MBProgressHUD showText:str];
         }else{
+            
+            
             for (NSDictionary *dic in responseObject[@"content"][@"data"]) {
                 _model = [[PurifyModel alloc] initWithDictionary:dic];
                 [self.dataArr addObject:_model];
+                self.classroom_id = dic[@"classroom_id"];
+                self.bid = dic[@"bid"];
+                self.device_on = dic[@"device_on"];
+                self.uv_on= dic[@"uv_on"];
+                self.fresh_air_open = dic[@"fresh_air_open"];
+                self.wenduLabel.text = [NSString stringWithFormat:@"%@",dic[@"temperature"]];
             }
-            self.wenduLabel.text = [NSString stringWithFormat:@"%@",_model.temperature];
+            
 
         }
         
@@ -695,7 +709,7 @@
 
 
 -(void)SendData{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/air_cleaners/air_cleaner/open-air_cleaner",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/app/air_cleaners/air_cleaner/open-airCleaner",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
@@ -717,8 +731,11 @@
     [parameters setValue:self.wind_speed forKey:@"wind_speed"];
     [parameters setValue:self.uv_on forKey:@"uv_on"];
     [parameters setValue:self.fresh_air_open forKey:@"fresh_air_open"];
-    NSLog(@"%@",self.classroom_id);
-    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    [parameters setValue:self.runmodel forKey:@"run_model"];
+    [parameters setValue:self.device_on forKey:@"device_on"];
+    [parameters setValue:self.bid forKey:@"bid"];
+    NSLog(@"%@",parameters);
+    [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"设置净化器正确%@",responseObject);
 

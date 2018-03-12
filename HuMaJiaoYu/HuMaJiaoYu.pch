@@ -11,7 +11,7 @@
 #import "MBProgressHUD.h"
 #import "HSingleGlobalData.h"
 #import "AFNetworking.h"
-#define kUrl @"http://121.43.166.98"
+#define kUrl @"http://api.app.hm.catone-vip.com"
 #import "MJRefresh.h"
 #define KWidth [UIScreen mainScreen].bounds.size.width
 #define KHeight [UIScreen mainScreen].bounds.size.height

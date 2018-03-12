@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,6 +15,7 @@
                 <outlet property="selectBtn" destination="kkf-Vw-QIu" id="ncL-dY-eo4"/>
                 <outlet property="selectbtn" destination="kkf-Vw-QIu" id="ws2-YM-Rds"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="yaoqingmaText" destination="QaR-Nr-xyz" id="MiE-yu-ucl"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -34,24 +35,10 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="thi-Zq-ZX1">
                             <rect key="frame" x="15" y="88" width="345" height="1"/>
-                            <subviews>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入学校邀请码,4-16位的数字或字母" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QaR-Nr-xyz">
-                                    <rect key="frame" x="72" y="-43" width="268" height="36"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="36" id="jSw-DZ-U7W"/>
-                                    </constraints>
-                                    <nil key="textColor"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </textField>
-                            </subviews>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="G80-tp-JIm"/>
-                                <constraint firstItem="QaR-Nr-xyz" firstAttribute="top" secondItem="thi-Zq-ZX1" secondAttribute="top" constant="-43" id="T2b-nj-Lk6"/>
-                                <constraint firstAttribute="trailing" secondItem="QaR-Nr-xyz" secondAttribute="trailing" constant="5" id="Xoy-P0-GDs"/>
                                 <constraint firstAttribute="height" constant="1" id="pWG-jI-L1q"/>
-                                <constraint firstItem="QaR-Nr-xyz" firstAttribute="leading" secondItem="thi-Zq-ZX1" secondAttribute="leading" constant="72" id="uJ7-e0-X90"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="邀请码:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oj3-Zp-Zbo">
@@ -113,11 +100,21 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入学校邀请码,4-16位的数字或字母" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QaR-Nr-xyz">
+                            <rect key="frame" x="85" y="44" width="268" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="eCb-RR-dot"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="thi-Zq-ZX1" secondAttribute="trailing" constant="15" id="2Ct-tm-ilu"/>
                         <constraint firstAttribute="trailing" secondItem="t81-dO-iaj" secondAttribute="trailing" constant="15" id="3aK-rS-Lrw"/>
+                        <constraint firstItem="QaR-Nr-xyz" firstAttribute="leading" secondItem="oj3-Zp-Zbo" secondAttribute="trailing" constant="8" id="5hn-q4-9yt"/>
                         <constraint firstItem="t81-dO-iaj" firstAttribute="top" secondItem="vYe-Me-oml" secondAttribute="top" constant="43" id="62Y-sY-P6w"/>
                         <constraint firstItem="XjP-8p-aTQ" firstAttribute="top" secondItem="thi-Zq-ZX1" secondAttribute="bottom" constant="8" id="BoT-qc-kms"/>
                         <constraint firstItem="aFT-r5-5bW" firstAttribute="top" secondItem="vYe-Me-oml" secondAttribute="top" constant="9" id="Etu-er-UKg"/>
@@ -126,8 +123,10 @@
                         <constraint firstItem="qZk-Vt-Jse" firstAttribute="top" secondItem="vYe-Me-oml" secondAttribute="top" constant="14" id="PfM-o7-aSt"/>
                         <constraint firstAttribute="trailing" secondItem="EMH-Oq-ZpQ" secondAttribute="trailing" constant="59" id="Sda-wu-VTL"/>
                         <constraint firstItem="aFT-r5-5bW" firstAttribute="leading" secondItem="qZk-Vt-Jse" secondAttribute="trailing" constant="8" id="Vs9-65-XLb"/>
+                        <constraint firstItem="QaR-Nr-xyz" firstAttribute="top" secondItem="t81-dO-iaj" secondAttribute="bottom" id="YlM-LG-wWk"/>
                         <constraint firstItem="t81-dO-iaj" firstAttribute="leading" secondItem="vYe-Me-oml" secondAttribute="leading" constant="15" id="as9-P8-V16"/>
                         <constraint firstItem="thi-Zq-ZX1" firstAttribute="leading" secondItem="vYe-Me-oml" secondAttribute="leading" constant="15" id="bch-BG-9Kr"/>
+                        <constraint firstAttribute="trailing" secondItem="QaR-Nr-xyz" secondAttribute="trailing" constant="22" id="hpl-cX-sFV"/>
                         <constraint firstItem="qZk-Vt-Jse" firstAttribute="leading" secondItem="vYe-Me-oml" secondAttribute="leading" constant="15" id="k9G-SM-MsY"/>
                         <constraint firstItem="oj3-Zp-Zbo" firstAttribute="leading" secondItem="vYe-Me-oml" secondAttribute="leading" constant="15" id="nUe-YG-qPV"/>
                         <constraint firstItem="XjP-8p-aTQ" firstAttribute="leading" secondItem="vYe-Me-oml" secondAttribute="leading" constant="15" id="nju-9s-XPC"/>

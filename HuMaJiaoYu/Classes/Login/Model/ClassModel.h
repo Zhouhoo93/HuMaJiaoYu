@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface ClassModel : NSObject
-@property (nonatomic,copy) NSString *classes;
-@property (nonatomic,copy) NSString *class_alias;
-@property (nonatomic,copy) NSString *classroom_id;
+@property (nonatomic,copy) NSString *alias;
 @property (nonatomic,copy) NSString *grade_id;
+@property (nonatomic,copy) NSString *name;
+@property (nonatomic,copy) NSString *school_id;
 @property (nonatomic,copy) NSString *ID;
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end

@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface GradeModel : NSObject
-@property (nonatomic,copy) NSString *grade;
-@property (nonatomic,copy) NSString *grade_alias;
+@property (nonatomic,copy) NSString *alias;
+@property (nonatomic,copy) NSString *name;
 @property (nonatomic,copy) NSString *ID;
-@property (nonatomic,copy) NSString *updated_at;
+@property (nonatomic,copy) NSString *created_at;
+@property (nonatomic,strong)NSMutableArray *classrooms;
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end

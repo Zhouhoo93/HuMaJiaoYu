@@ -239,7 +239,7 @@ static NSString * const cellIdentifier = @"cellIdentifier";
 }
 
 -(void)requestData{
-    NSString *URL = [NSString stringWithFormat:@"%@/selectAppinform",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/app-notices",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
@@ -250,15 +250,16 @@ static NSString * const cellIdentifier = @"cellIdentifier";
     //    [parameters setValue:@"文章id" forKey:@"id"];
     NSString *page = [NSString stringWithFormat:@"%d",self.page];
     [parameters setValue:page forKey:@"page"];
-    
+    NSString *schoolID = [userDefaults valueForKey:@"schoolID"];
+    [parameters setValue:schoolID forKey:@"school_id"];
     NSLog(@"%@",parameters);
-    [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取通知正确%@",responseObject);
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            NSString *str = responseObject[@"result"][@"errorMsg"];
+        if ([responseObject[@"code"] intValue] !=0) {
+            NSString *str = responseObject[@"msg"];
             [MBProgressHUD showText:str];
         }else{
             if (self.page<2) {
@@ -270,7 +271,7 @@ static NSString * const cellIdentifier = @"cellIdentifier";
             }else{
                 self.page--;
             }
-            for (NSDictionary *dic in responseObject[@"content"]) {
+            for (NSDictionary *dic in responseObject[@"data"][@"data"]) {
                 _findModel = [[FindModel alloc] initWithDictionary:dic];
                 [self.dataArray addObject:_findModel];
             }

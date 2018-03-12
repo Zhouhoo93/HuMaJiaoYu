@@ -13,6 +13,7 @@
 #import "PopModel.h"
 #import "Header.h"
 @interface RegisterViewController ()<UIActionSheetDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *yaoqingmaText;
 @property (weak, nonatomic) IBOutlet UIView *bgView;
 @property (weak, nonatomic) IBOutlet UIButton *selectBtn;
 @property (nonatomic, strong) NSMutableArray *dataArr;
@@ -57,20 +58,55 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 - (IBAction)registerBtnClick:(id)sender {
-    if ([self.selectbtn.titleLabel.text isEqualToString:@"家长"]) {
-        ParentRegisterViewController *vc = [[ParentRegisterViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }else if([self.selectbtn.titleLabel.text isEqualToString:@"学生"]){
-        StudentRegisterViewController *vc = [[StudentRegisterViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }else if([self.selectbtn.titleLabel.text isEqualToString:@"教师"]){
-        
-    }else{
-        [MBProgressHUD showText:@"请先选择身份"];
-    }
+    [self requestSchoolid];
 
     
 }
+
+- (void)requestSchoolid {
+    NSString *URL = [NSString stringWithFormat:@"%@/schools/get-by-code",kUrl];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:self.yaoqingmaText.text forKey:@"code"];
+    NSLog(@"参数:%@",parameters);
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        MyLog(@"正确%@",responseObject);
+        NSString *schoolID = [[NSString alloc] init];
+        schoolID = [responseObject[@"data"][@"id"] stringValue];
+        
+        if(schoolID.length>0){
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setObject:schoolID forKey:@"schoolID"];
+            
+            if ([self.selectbtn.titleLabel.text isEqualToString:@"家长"]) {
+                ParentRegisterViewController *vc = [[ParentRegisterViewController alloc] init];
+                vc.schoolCode = self.yaoqingmaText.text;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if([self.selectbtn.titleLabel.text isEqualToString:@"学生"]){
+                StudentRegisterViewController *vc = [[StudentRegisterViewController alloc] init];
+                vc.schoolCode = self.yaoqingmaText.text;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if([self.selectbtn.titleLabel.text isEqualToString:@"教师"]){
+                
+            }else{
+                [MBProgressHUD showText:@"请先选择身份"];
+            }
+            
+        }else{
+            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        MyLog(@"失败%@",error);
+        //        [MBProgressHUD showText:@"%@",error[@"error"]];
+    }];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

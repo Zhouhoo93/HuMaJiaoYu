@@ -184,10 +184,11 @@
 - (void)ThiredBtnClick{}
 
 -(void)requestHeaderData{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/getHomepage",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/app-banners",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
+    NSString *schoolID = [userDefaults valueForKey:@"schoolID"];
     NSString *type = [userDefaults valueForKey:@"type"];
     NSLog(@"token:%@",token);
     [userDefaults synchronize];
@@ -196,16 +197,17 @@
     NSString *page = [NSString new];
     if([type isEqualToString:@"学生"]){
         page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
     }else if([type isEqualToString:@"家长"]){
         page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
     }else{
         page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
     }
     
-    //    [parameters setValue:page forKey:@"type"];
+        [parameters setValue:page forKey:@"key"];
+    [parameters setValue:schoolID forKey:@"schoolID"];
     
     NSLog(@"%@",parameters);
     [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -214,19 +216,14 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取轮播图正确%@",responseObject);
         
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            NSNumber *code = responseObject[@"result"][@"errorCode"];
-            NSString *errorcode = [NSString stringWithFormat:@"%@",code];
-            if ([errorcode isEqualToString:@"4200"])  {
-//                [MBProgressHUD showText:@"请重新登陆"];
-//                [self newLogin];
-            }else{
-                NSString *str = responseObject[@"result"][@"errorMsg"];
+        if ([responseObject[@"code"] intValue] !=0) {
+           
+                NSString *str = responseObject[@"msg"];
                 [MBProgressHUD showText:str];
-            }
+            
         }else{
             
-            for (NSDictionary *dic in responseObject[@"content"][@"data"]) {
+            for (NSDictionary *dic in responseObject[@"data"]) {
                 NSString *picStr = dic[@"pic"];
                 [self.PicArr addObject:picStr];
             }
