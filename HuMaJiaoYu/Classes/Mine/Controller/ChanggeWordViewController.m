@@ -36,38 +36,29 @@
 }
 //验证账号密码
 - (void)requestPassWord {
-    NSString *URL = [NSString stringWithFormat:@"%@/app-update-pwd",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/change-password",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    if ([type isEqualToString:@"学生"]) {
-        //        [parameters setValue:@"appstu" forKey:@"type"];
-        [manager.requestSerializer  setValue:@"appstu" forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        //        [parameters setValue:@"appfamily" forKey:@"type"];
-        [manager.requestSerializer  setValue:@"appfamily" forHTTPHeaderField:@"type"];
-    }else{
-        //        [parameters setValue:@"teacher" forKey:@"type"];
-    }
+   
     NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    [parameters setValue:token forKey:@"token"];
     
-    [parameters setValue:self.OldWordText.text forKey:@"oldpwd"];
+    [parameters setValue:self.OldWordText.text forKey:@"password"];
     //    [parameters setValue:self.userNameText.text forKey:@"username"];
-    [parameters setValue:self.NewWordText.text forKey:@"pwd"];
+    [parameters setValue:self.NewWordText.text forKey:@"new_password"];
     [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"修改密码正确%@",responseObject);
-        if([responseObject[@"result"][@"success"] intValue] ==1){
+        if([responseObject[@"code"] intValue] ==0){
             [MBProgressHUD showText:@"设置成功"];
             [self.navigationController popViewControllerAnimated:YES];
             
         }else{
-            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"result"][@"errorMsg"]]];
-            NSLog(@"%@",responseObject[@"result"][@"errorMsg"]);
+            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
+            NSLog(@"%@",responseObject[@"msg"]);
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

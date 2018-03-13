@@ -17,6 +17,7 @@
 @property (nonatomic,strong)UICollectionView *collectionView;
 @property (nonatomic,strong)UICollectionView *collectionView1;
 @property (nonatomic,strong) NSMutableArray *PicArr;
+@property (nonatomic,strong) UIButton *leftButton;
 @end
 
 @implementation ViewController
@@ -76,11 +77,12 @@
     blueView.alpha = 0.7;
     [self.bgView addSubview:blueView];
     
-    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, 70, 30)];
-    [leftButton setImage:[UIImage imageNamed:@"加号"] forState:UIControlStateNormal];
-//    [leftButton setTitle:@"  幼儿园" forState:UIControlStateNormal];
-    [leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [blueView addSubview:leftButton];
+    self.leftButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, 150, 30)];
+    [self.leftButton setImage:[UIImage imageNamed:@"加号"] forState:UIControlStateNormal];
+    self.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//    [self.leftButton setTitle:@"  幼儿园" forState:UIControlStateNormal];
+    [self.leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [blueView addSubview:self.leftButton];
     
     UIImageView *jiaImage = [[UIImageView alloc] init];
     jiaImage.frame = CGRectMake(10, 8, 15, 15);
@@ -96,9 +98,14 @@
     
     UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-30, 5, 20, 20)];
     [rightButton setImage:[UIImage imageNamed:@"图层-16"] forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(rightBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [blueView addSubview:rightButton];
     
-    
+    [self requestSchool];
+}
+
+- (void)rightBtnClick{
+    self.tabBarController.selectedIndex=3;
 }
 
 - (void)setButton{
@@ -189,28 +196,16 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
     NSString *schoolID = [userDefaults valueForKey:@"schoolID"];
-    NSString *type = [userDefaults valueForKey:@"type"];
     NSLog(@"token:%@",token);
     [userDefaults synchronize];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-//        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-//        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-//        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
     
-        [parameters setValue:page forKey:@"key"];
-    [parameters setValue:schoolID forKey:@"schoolID"];
+        [parameters setValue:@"index_banner" forKey:@"key"];
+    [parameters setValue:schoolID forKey:@"school_id"];
     
     NSLog(@"%@",parameters);
-    [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -224,7 +219,7 @@
         }else{
             
             for (NSDictionary *dic in responseObject[@"data"]) {
-                NSString *picStr = dic[@"pic"];
+                NSString *picStr = dic[@"image"];
                 [self.PicArr addObject:picStr];
             }
             [self setLunBo];
@@ -237,7 +232,44 @@
     
     
 }
-
+-(void)requestSchool{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userDefaults valueForKey:@"token"];
+    NSString *schoolID = [userDefaults valueForKey:@"schoolID"];
+    [userDefaults synchronize];
+    NSString *URL = [NSString stringWithFormat:@"%@/schools/%@",kUrl,schoolID];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+//    [parameters setValue:schoolID forKey:@"id"];
+    [parameters setValue:token forKey:@"token"];
+    
+    NSLog(@"%@",parameters);
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        MyLog(@"获取学校正确%@",responseObject);
+        
+        if ([responseObject[@"code"] intValue] !=0) {
+            
+            NSString *str = responseObject[@"msg"];
+            [MBProgressHUD showText:str];
+            
+        }else{
+            NSString *str = responseObject[@"data"][@"name"];
+            [self.leftButton setTitle:str forState:UIControlStateNormal];
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        MyLog(@"失败%@",error);
+        //        [MBProgressHUD showText:@"%@",error[@"error"]];
+    }];
+    
+    
+}
 //定义每个UICollectionViewCell 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {

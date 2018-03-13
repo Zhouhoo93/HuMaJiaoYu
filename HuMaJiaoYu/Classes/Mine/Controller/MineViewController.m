@@ -21,6 +21,7 @@
 @property (nonatomic,strong) UILabel *nameLabel;
 @property (nonatomic,strong) UILabel *phoneLabel;
 @property (nonatomic,strong) UIButton *nameBtn;
+@property (nonatomic,copy)NSString *imageUrl;
 @end
 
 @implementation MineViewController
@@ -262,37 +263,25 @@
 }
 
 -(void)requestData{
-    NSString *URL = [NSString stringWithFormat:@"%@/select-app-name",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/me",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSLog(@"token:%@",token);
+   
     [userDefaults synchronize];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
-
-//    [parameters setValue:page forKey:@"type"];
+    
+    [parameters setValue:token forKey:@"token"];
     
     NSLog(@"%@",parameters);
-    [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取个人信息正确%@",responseObject);
 
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
+        if ([responseObject[@"result"][@"success"] intValue] !=0) {
             NSNumber *code = responseObject[@"result"][@"errorCode"];
             NSString *errorcode = [NSString stringWithFormat:@"%@",code];
             if ([errorcode isEqualToString:@"4200"])  {
@@ -307,15 +296,14 @@
             {
                 
             }else{
-            if([type isEqualToString:@"学生"]){
-                
-                NSString *stuname = [NSString stringWithFormat:@"%@",responseObject[@"content"][@"stu_name"]];
+
+                NSString *stuname = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"name"]];
                 NSString *nameText = stuname;
                 [self.nameBtn setTitle:nameText forState:UIControlStateNormal];
-                NSString *tel = responseObject[@"content"][@"tel"];
+                NSString *tel = responseObject[@"data"][@"phone"];
                 self.phoneLabel.text = [NSString stringWithFormat:@"手机:%@",tel];
-                NSString *picURL = responseObject[@"content"][@"stu_pic"];
-                
+                NSString *picURL = responseObject[@"data"][@"avatar"];
+
                 //然后就是添加照片语句，这次不是`imageWithName`了，是 imageWithData。
                 if (![picURL.class isEqual:[NSNull class]]) {
                     NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
@@ -324,36 +312,6 @@
                     self.touImage.image = [UIImage imageNamed:@"moren"];
                 }
 
-            }else if([type isEqualToString:@"家长"]){
-                NSString *nameText = responseObject[@"content"][@"family_name"];
-                [self.nameBtn setTitle:nameText forState:UIControlStateNormal];
-                NSString *tel = responseObject[@"content"][@"tel"];
-                self.phoneLabel.text = [NSString stringWithFormat:@"手机:%@",tel];
-                NSString *picURL = responseObject[@"content"][@"family_pic"];
-                
-                //然后就是添加照片语句，这次不是`imageWithName`了，是 imageWithData。
-                if (![picURL.class isEqual:[NSNull class]]) {
-                    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
-                    self.touImage.image = [UIImage imageWithData:data];
-                }else{
-                    self.touImage.image = [UIImage imageNamed:@"moren"];
-                }
-
-            }else{
-                NSString *nameText = responseObject[@"content"][@"teacher_name"];
-                [self.nameBtn setTitle:nameText forState:UIControlStateNormal];
-                NSString *tel = responseObject[@"content"][@"tel"];
-                self.phoneLabel.text = [NSString stringWithFormat:@"手机:%@",tel];
-                NSString *picURL = responseObject[@"content"][@"teacher_pic"];
-                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
-                //然后就是添加照片语句，这次不是`imageWithName`了，是 imageWithData。
-                if (data.length > 0) {
-                    self.touImage.image = [UIImage imageWithData:data];
-                }else{
-                    self.touImage.image = [UIImage imageNamed:@"moren"];
-                }
-
-            }
             }
             
         }
@@ -406,64 +364,121 @@
     
     //将图片上传到服务器
     //    --------------------------------------------------------
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//
+    
+    NSString * urlString = [NSString stringWithFormat:@"%@/upload/image",kUrl];
+//
+//    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+//
+//    //    [dic setValue:imageData forKey:@"upload_file"];
+//    [dic setValue:imageData forKey:@"file"];
+//    [manager POST:urlString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+//        //通过post请求上传用户头像图片,name和fileName传的参数需要跟后台协商,看后台要传的参数名
+//        [formData appendPartWithFileData:imageData name:@"file" fileName:@"app" mimeType:@"image/png"];
+//    } progress:^(NSProgress * _Nonnull uploadProgress) {
+//
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        //解析后台返回的结果,如果不做一下处理,打印结果可能是一些二进制流数据
+//        if ([responseObject[@"result"][@"success"] intValue] ==0) {
+//            [MBProgressHUD showText:@"上传头像失败"];
+//        }else{
+    
+//        NSLog(@"上传图片成功0---%@",responseObject);
+//        }
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        NSLog(@"上传图片-- 失败  -%@",error);
+//    }];
+    
+    //---------------------------
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    //    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    //    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/html",@"text/javascript",@"text/json", nil];
+    //接收类型不一致请替换一致text/html或别的
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
     [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *page = [NSString new];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
-
-    NSString * urlString = [NSString stringWithFormat:@"%@/upload-head",kUrl];
-    //    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-    //    NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithCapacity:1];
-    //    [dict setObject:[userDefaults objectForKey:@"user_id"] forKey:@"user_id"];
-    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",
+                                                         @"text/html",
+                                                         @"image/jpeg",
+                                                         @"image/png",
+                                                         @"application/octet-stream",
+                                                         @"text/json",
+                                                         nil];
+    //AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    // NSDictionary *dic = @{@"id":myDelegate.userId};
     
-    //    [dic setValue:imageData forKey:@"upload_file"];
-    [dic setValue:@"app" forKey:@"upload_file"];
-    [manager POST:urlString parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        //通过post请求上传用户头像图片,name和fileName传的参数需要跟后台协商,看后台要传的参数名
-        [formData appendPartWithFileData:imageData name:@"upload_file" fileName:@"app" mimeType:@"image/png"];
+    NSURLSessionDataTask *task = [manager POST:urlString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSData *imageDatas = imageData;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"yyyyMMddHHmmss";
+        NSString *str = [formatter stringFromDate:[NSDate date]];
+        NSString *fileName = [NSString stringWithFormat:@"%@.jpg", str];
+        //上传的参数(上传图片，以文件流的格式)
+        [formData appendPartWithFileData:imageDatas
+                                    name:@"file"
+                                fileName:fileName
+                                mimeType:@"image/jpeg"];
     } progress:^(NSProgress * _Nonnull uploadProgress) {
-        
+        //打印下上传进度
+        NSLog(@"上传进度");
+        NSLog(@"%@",uploadProgress);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //解析后台返回的结果,如果不做一下处理,打印结果可能是一些二进制流数据
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            [MBProgressHUD showText:@"上传头像失败"];
+        //上传成功
+        NSLog(@"上传成功");
+        NSString *str = responseObject[@"data"];
+        self.imageUrl = [NSString stringWithFormat:@"%@",str];
+        [self requestImage];
+        NSString *picURL = responseObject[@"data"];
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
+        //然后就是添加照片语句，这次不是`imageWithName`了，是 imageWithData。
+        if (data.length > 0) {
+            self.touImage.image = [UIImage imageWithData:data];
         }else{
-            NSString *picURL = responseObject[@"content"];
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
-            //然后就是添加照片语句，这次不是`imageWithName`了，是 imageWithData。
-            if (data.length > 0) {
-                self.touImage.image = [UIImage imageWithData:data];
-            }else{
-                self.touImage.image = [UIImage imageNamed:@"moren"];
-            }
-
+            self.touImage.image = [UIImage imageNamed:@"moren"];
+        }
+        //
 //        [_tableView reloadData];
 //        [_myDelegate genggai];
-        NSLog(@"上传图片成功0---%@",responseObject);
-        }
+        [picker dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+        NSLog(@"%@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"上传图片-- 失败  -%@",error);
+        //上传失败
+        NSLog(@"上传失败");
     }];
-    [picker dismissViewControllerAnimated:YES completion:^{
+    
+}
+
+- (void)requestImage{
+    NSString *URL = [NSString stringWithFormat:@"%@/modify-avatar",kUrl];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userDefaults valueForKey:@"token"];
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:self.imageUrl forKey:@"avatar"];
+   [parameters setValue:token forKey:@"token"];
+    [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        MyLog(@"正确%@",responseObject);
+        if([responseObject[@"code"] intValue] ==0){
+            
+            
+        }else{
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text =responseObject[@"msg"];
+            [hud hideAnimated:YES afterDelay:2.f];
+            //            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"result"][@"errorMsg"]]];
+            //            NSLog(@"%@",responseObject[@"result"][@"errorMsg"]);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        MyLog(@"失败%@",error);
+        //        [MBProgressHUD showText:@"%@",error[@"error"]];
     }];
-    
-    
 }
 //用户取消选取时调用
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

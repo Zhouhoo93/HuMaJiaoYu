@@ -60,7 +60,8 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)commitBtnClick:(id)sender {
-    [self checkCode];
+//    [self checkCode];
+    [self requestPassWord];
 }
 - (IBAction)sendPassBtnClick:(id)sender {
     
@@ -134,7 +135,7 @@ static NSInteger count = 0;
 #pragma mark - 请求数据
 //请求数据,获取验证码
 - (void)requestData {
-    NSString *URLstring = [NSString stringWithFormat:@"%@/get-code",kUrl];
+    NSString *URLstring = [NSString stringWithFormat:@"%@/send-sms-verify-code",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -143,7 +144,7 @@ static NSInteger count = 0;
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"application/json", @"text/html",  @"text/json",@"text/JavaScript", nil];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:self.phoneNumText.text forKey:@"phone"];
-    [parameters setValue:@"apppwd" forKey:@"type"];
+//    [parameters setValue:@"apppwd" forKey:@"type"];
     //post请求
     [manager POST:URLstring parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -200,32 +201,33 @@ static NSInteger count = 0;
 #pragma mark - 验证账号密码
 //验证账号密码
 - (void)requestPassWord {
-    NSString *URL = [NSString stringWithFormat:@"%@/app-pwd",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/set-password",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    if ([self.selectbtn.titleLabel.text isEqualToString:@"学生"]) {
-        [parameters setValue:@"students" forKey:@"type"];
-    }else if([self.selectbtn.titleLabel.text isEqualToString:@"家长"]){
-        [parameters setValue:@"family" forKey:@"type"];
-    }else{
-        [parameters setValue:@"teacher" forKey:@"type"];
-    }
-    [parameters setValue:self.phoneNumText.text forKey:@"tel"];
+//    if ([self.selectbtn.titleLabel.text isEqualToString:@"学生"]) {
+//        [parameters setValue:@"students" forKey:@"type"];
+//    }else if([self.selectbtn.titleLabel.text isEqualToString:@"家长"]){
+//        [parameters setValue:@"family" forKey:@"type"];
+//    }else{
+//        [parameters setValue:@"teacher" forKey:@"type"];
+//    }
+    [parameters setValue:self.phoneNumText.text forKey:@"phone"];
     [parameters setValue:self.userNameText.text forKey:@"username"];
-    [parameters setValue:self.passWordTextField.text forKey:@"pwd"];
+    [parameters setValue:self.passWordTextField.text forKey:@"password"];
+    [parameters setValue:self.codeText.text forKey:@"code"];
     [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"正确%@",responseObject);
-        if([responseObject[@"result"][@"success"] intValue] ==1){
+        if([responseObject[@"code"] intValue] ==0){
             [MBProgressHUD showText:@"设置成功"];
             [self.navigationController popViewControllerAnimated:YES];
             
         }else{
-            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"result"][@"errorMsg"]]];
-            NSLog(@"%@",responseObject[@"result"][@"errorMsg"]);
+            [MBProgressHUD showText:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
+            NSLog(@"%@",responseObject[@"msg"]);
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
