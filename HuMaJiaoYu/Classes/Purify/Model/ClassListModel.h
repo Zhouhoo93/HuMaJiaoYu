@@ -9,11 +9,15 @@
 #import <Foundation/Foundation.h>
 
 @interface ClassListModel : NSObject
-@property (nonatomic,copy) NSString *class_id;
-@property (nonatomic,copy) NSString *class_name;
-@property (nonatomic,copy) NSString *classroom_id;
-@property (nonatomic,copy) NSString *location;
+@property (nonatomic,copy) NSString *name;
+@property (nonatomic,copy) NSMutableDictionary *room;
+@property (nonatomic,copy) NSString *ID;
+@property (nonatomic,copy) NSString *plan_id;
+@property (nonatomic,copy) NSString *room_id;
+@property (nonatomic,copy) NSString *scene_id;
+@property (nonatomic,copy) NSString *school_id;
+@property (nonatomic,copy) NSString *sn;
 @property (nonatomic,copy) NSString *status;
-
+@property (nonatomic,copy) NSString *type;
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end

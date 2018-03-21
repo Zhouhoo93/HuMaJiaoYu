@@ -12,9 +12,11 @@
 #import "PurifyControlViewController.h"
 #import "ClassListModel.h"
 #import "LoginViewController.h"
+#import "ClassListTwoModel.h"
 @interface PurifyViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic,strong) UICollectionView *collectionView;
 @property (nonatomic,strong) ClassListModel *model;
+@property (nonatomic,strong) ClassListTwoModel *modelTwo;
 @property (nonatomic,strong) NSMutableArray *dataArr;
 @end
 
@@ -90,6 +92,7 @@
     [collectionView registerNib:nib forCellWithReuseIdentifier:@"cellid"];
     PurifyCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellid" forIndexPath:indexPath];
     _model = _dataArr[indexPath.row];
+    _modelTwo = _model.room;
     NSInteger status = [_model.status integerValue];
     if (status ==1) {
         cell.statusBgImg.image = [UIImage imageNamed:@"绿圆"];
@@ -98,8 +101,8 @@
     }else if (status ==3) {
         cell.statusBgImg.image = [UIImage imageNamed:@"灰圆"];
     }
-    cell.locationLabel.text = _model.location;
-    cell.classroomLabel.text = _model.class_name;
+//    cell.locationLabel.text = _model.location;
+    cell.classroomLabel.text = _model.room[@"alias"];
     return cell;
 }
 
@@ -108,40 +111,44 @@
     if([self.type isEqualToString:@"净化器"]){
         PurifyControlViewController *vc = [[PurifyControlViewController alloc] init];
         _model = _dataArr[indexPath.row];
-        vc.classroom_id = _model.classroom_id;
+        _modelTwo = _model.room;
+        vc.classroom_id = _model.room[@"classroom_id"];
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         LightViewController *vc = [[LightViewController alloc] init];
                 _model = _dataArr[indexPath.row];
-                vc.classroom_id = _model.classroom_id;
+        _modelTwo = _model.room;
+                vc.classroom_id = _model.room[@"classroom_id"];
         [self.navigationController pushViewController:vc animated:YES];
     }
     
 }
 -(void)requestData{
-    if([self.type isEqualToString:@"净化器"]){
-        NSString *URL = [NSString stringWithFormat:@"%@/app/air_cleaners/air_cleaner/get-classes-status",kUrl];
+    
+        NSString *URL = [NSString stringWithFormat:@"%@/my-equipments",kUrl];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *token = [userDefaults valueForKey:@"token"];
         [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-        NSString *type = [userDefaults valueForKey:@"type"];
-        NSString *page = [NSString new];
-        if([type isEqualToString:@"学生"]){
-            page = @"appstu";
-            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-        }else if([type isEqualToString:@"家长"]){
-            page = @"appfamily";
-            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-        }else{
-            page = @"appteacher";
-            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-        }
-        [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+//        NSString *type = [userDefaults valueForKey:@"type"];
+//        NSString *page = [NSString new];
+//        if([type isEqualToString:@"学生"]){
+//            page = @"appstu";
+//            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        }else if([type isEqualToString:@"家长"]){
+//            page = @"appfamily";
+//            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        }else{
+//            page = @"appteacher";
+//            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        }
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        [parameters setValue:token forKey:@"token"];
+        [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             MyLog(@"获取净化器列表正确%@",responseObject);
             
-            if ([responseObject[@"result"][@"success"] intValue] ==0) {
+            if ([responseObject[@"result"][@"code"] intValue] !=0) {
                 NSNumber *code = responseObject[@"result"][@"errorCode"];
                 NSString *errorcode = [NSString stringWithFormat:@"%@",code];
                 if ([errorcode isEqualToString:@"4200"])  {
@@ -152,7 +159,7 @@
                 [MBProgressHUD showText:str];
                 }
             }else{
-                NSArray *arr = responseObject[@"content"][@"class_list"];
+                NSArray *arr = responseObject[@"data"];
                 if (arr.count>0) {
                     for (int i=0; i<arr.count; i++) {
                         NSDictionary *dic = arr[i];
@@ -172,60 +179,61 @@
             MyLog(@"失败%@",error);
             //        [MBProgressHUD showText:@"%@",error[@"error"]];
         }];
-    }else {
-        NSString *URL = [NSString stringWithFormat:@"%@/app/lights/light/get-classes-status",kUrl];
-        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSString *token = [userDefaults valueForKey:@"token"];
-        [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-        NSString *type = [userDefaults valueForKey:@"type"];
-        NSString *page = [NSString new];
-        if([type isEqualToString:@"学生"]){
-            page = @"appstu";
-            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-        }else if([type isEqualToString:@"家长"]){
-            page = @"appfamily";
-            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-        }else{
-            page = @"appteacher";
-            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-        }
-        [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
-        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            MyLog(@"获取灯光列表正确%@",responseObject);
-
-            if ([responseObject[@"result"][@"success"] intValue] ==0) {
-                NSNumber *code = responseObject[@"result"][@"errorCode"];
-                NSString *errorcode = [NSString stringWithFormat:@"%@",code];
-                if ([errorcode isEqualToString:@"4200"])  {
-                    [MBProgressHUD showText:@"请重新登陆"];
-                    [self newLogin];
-                }else{
-                NSString *str = responseObject[@"result"][@"errorMsg"];
-                [MBProgressHUD showText:str];
-                }
-            }else{
-                NSArray *arr = responseObject[@"content"][@"class_list"];
-                if (arr.count>0) {
-                    for (int i=0; i<arr.count; i++) {
-                        NSDictionary *dic = arr[i];
-                        _model = [[ClassListModel alloc] initWithDictionary:dic];
-                        [self.dataArr addObject:_model];
-                    }
-                    [self.collectionView reloadData];
-
-                }else{
-                    [MBProgressHUD showText:@"暂无班级列表"];
-                }
-                
-                
-            }
-            
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            MyLog(@"失败%@",error);
-            //        [MBProgressHUD showText:@"%@",error[@"error"]];
-        }];
-    }
+    
+//    }else {
+//        NSString *URL = [NSString stringWithFormat:@"%@/app/lights/light/get-classes-status",kUrl];
+//        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        NSString *token = [userDefaults valueForKey:@"token"];
+//        [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+//        NSString *type = [userDefaults valueForKey:@"type"];
+//        NSString *page = [NSString new];
+//        if([type isEqualToString:@"学生"]){
+//            page = @"appstu";
+//            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        }else if([type isEqualToString:@"家长"]){
+//            page = @"appfamily";
+//            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        }else{
+//            page = @"appteacher";
+//            [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
+//        }
+//        [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+//        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//            MyLog(@"获取灯光列表正确%@",responseObject);
+//
+//            if ([responseObject[@"result"][@"success"] intValue] ==0) {
+//                NSNumber *code = responseObject[@"result"][@"errorCode"];
+//                NSString *errorcode = [NSString stringWithFormat:@"%@",code];
+//                if ([errorcode isEqualToString:@"4200"])  {
+//                    [MBProgressHUD showText:@"请重新登陆"];
+//                    [self newLogin];
+//                }else{
+//                NSString *str = responseObject[@"result"][@"errorMsg"];
+//                [MBProgressHUD showText:str];
+//                }
+//            }else{
+//                NSArray *arr = responseObject[@"content"][@"class_list"];
+//                if (arr.count>0) {
+//                    for (int i=0; i<arr.count; i++) {
+//                        NSDictionary *dic = arr[i];
+//                        _model = [[ClassListModel alloc] initWithDictionary:dic];
+//                        [self.dataArr addObject:_model];
+//                    }
+//                    [self.collectionView reloadData];
+//
+//                }else{
+//                    [MBProgressHUD showText:@"暂无班级列表"];
+//                }
+//
+//
+//            }
+//
+//        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//            MyLog(@"失败%@",error);
+//            //        [MBProgressHUD showText:@"%@",error[@"error"]];
+//        }];
+//    }
     
 }
 
@@ -256,6 +264,12 @@
         _model = [[ClassListModel alloc] init];
     }
     return _model;
+}
+-(ClassListTwoModel *)modelTwo{
+    if (!_modelTwo) {
+        _modelTwo = [[ClassListTwoModel alloc] init];
+    }
+    return _modelTwo;
 }
 
 -(NSMutableArray *)dataArr {

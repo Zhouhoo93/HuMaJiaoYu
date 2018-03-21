@@ -1,14 +1,14 @@
 //
-//  ClassListModel.m
+//  ClassListTwoModel.m
 //  HuMaJiaoYu
 //
-//  Created by Zhouhoo on 2017/7/31.
-//  Copyright © 2017年 xinyuntec. All rights reserved.
+//  Created by Zhouhoo on 2018/3/21.
+//  Copyright © 2018年 xinyuntec. All rights reserved.
 //
 
-#import "ClassListModel.h"
+#import "ClassListTwoModel.h"
 
-@implementation ClassListModel
+@implementation ClassListTwoModel
 - (instancetype)initWithDictionary:(NSDictionary *)dic{
     if ([super init]) {
         //KVC赋值

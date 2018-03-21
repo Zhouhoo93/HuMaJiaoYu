@@ -112,6 +112,7 @@
 		383135AD1F25F450001FA338 /* ModifyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383135AB1F25F450001FA338 /* ModifyViewController.xib */; };
 		383135B11F25F895001FA338 /* NewPassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383135AF1F25F895001FA338 /* NewPassViewController.m */; };
 		383135B21F25F895001FA338 /* NewPassViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383135B01F25F895001FA338 /* NewPassViewController.xib */; };
+		383E389020623E610045F099 /* ClassListTwoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 383E388F20623E610045F099 /* ClassListTwoModel.m */; };
 		3846DDF41F2EC179002D8636 /* ZhanghaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3846DDF21F2EC179002D8636 /* ZhanghaoViewController.m */; };
 		3846DDF51F2EC179002D8636 /* ZhanghaoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3846DDF31F2EC179002D8636 /* ZhanghaoViewController.xib */; };
 		3846DDF91F2EC3A6002D8636 /* ChangePassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3846DDF71F2EC3A6002D8636 /* ChangePassViewController.m */; };
@@ -434,6 +435,8 @@
 		383135AE1F25F895001FA338 /* NewPassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPassViewController.h; sourceTree = "<group>"; };
 		383135AF1F25F895001FA338 /* NewPassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPassViewController.m; sourceTree = "<group>"; };
 		383135B01F25F895001FA338 /* NewPassViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewPassViewController.xib; sourceTree = "<group>"; };
+		383E388E20623E610045F099 /* ClassListTwoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassListTwoModel.h; sourceTree = "<group>"; };
+		383E388F20623E610045F099 /* ClassListTwoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassListTwoModel.m; sourceTree = "<group>"; };
 		3846DDF11F2EC179002D8636 /* ZhanghaoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhanghaoViewController.h; sourceTree = "<group>"; };
 		3846DDF21F2EC179002D8636 /* ZhanghaoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZhanghaoViewController.m; sourceTree = "<group>"; };
 		3846DDF31F2EC179002D8636 /* ZhanghaoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZhanghaoViewController.xib; sourceTree = "<group>"; };
@@ -1343,6 +1346,8 @@
 			children = (
 				3846DE0F1F2F031D002D8636 /* ClassListModel.h */,
 				3846DE101F2F031D002D8636 /* ClassListModel.m */,
+				383E388E20623E610045F099 /* ClassListTwoModel.h */,
+				383E388F20623E610045F099 /* ClassListTwoModel.m */,
 				382C5D781F301B0C00DD5361 /* LightModel.h */,
 				382C5D791F301B0C00DD5361 /* LightModel.m */,
 				382C5DA31F30AD0E00DD5361 /* LightQingJingModel.h */,
@@ -1765,6 +1770,7 @@
 				38A60F591F29E5FB0017EED6 /* MASViewConstraint.m in Sources */,
 				383135291F25A45C001FA338 /* AFURLResponseSerialization.m in Sources */,
 				38A60F5D1F29E5FB0017EED6 /* ViewController+MASAdditions.m in Sources */,
+				383E389020623E610045F099 /* ClassListTwoModel.m in Sources */,
 				383135821F25A870001FA338 /* MJRefreshBackFooter.m in Sources */,
 				38A31F401F2897F7009F1E27 /* IQUIWindow+Hierarchy.m in Sources */,
 				38A31F3D1F2897F7009F1E27 /* IQUITextFieldView+Additions.m in Sources */,
