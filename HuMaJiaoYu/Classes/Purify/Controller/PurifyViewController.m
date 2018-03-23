@@ -113,6 +113,7 @@
         _model = _dataArr[indexPath.row];
         _modelTwo = _model.room;
         vc.classroom_id = _model.room[@"classroom_id"];
+        vc.ID = _model.room[@"id"];
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         LightViewController *vc = [[LightViewController alloc] init];
@@ -147,18 +148,8 @@
         [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             MyLog(@"获取净化器列表正确%@",responseObject);
-            
-            if ([responseObject[@"result"][@"code"] intValue] !=0) {
-                NSNumber *code = responseObject[@"result"][@"errorCode"];
-                NSString *errorcode = [NSString stringWithFormat:@"%@",code];
-                if ([errorcode isEqualToString:@"4200"])  {
-                    [MBProgressHUD showText:@"请重新登陆"];
-                    [self newLogin];
-                }else{
-                NSString *str = responseObject[@"result"][@"errorMsg"];
-                [MBProgressHUD showText:str];
-                }
-            }else{
+            NSNumber *code = responseObject[@"code"];
+            if ([[code stringValue] isEqualToString:@"0"]) {
                 NSArray *arr = responseObject[@"data"];
                 if (arr.count>0) {
                     for (int i=0; i<arr.count; i++) {
@@ -168,10 +159,20 @@
                     }
                     [self.collectionView reloadData];
                 }else{
-                   [MBProgressHUD showText:@"暂无班级列表"];
+                    [MBProgressHUD showText:@"暂无班级列表"];
                 }
                 
+            }else{
                 
+                
+                NSString *errorcode = [NSString stringWithFormat:@"%@",code];
+                if ([errorcode isEqualToString:@"4003"])  {
+                    [MBProgressHUD showText:@"请重新登陆"];
+                    [self newLogin];
+                }else{
+                    NSString *str = responseObject[@"result"][@"errorMsg"];
+                    [MBProgressHUD showText:str];
+                }
                 
             }
             

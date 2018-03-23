@@ -12,7 +12,7 @@
 @property (nonatomic,copy) NSString *created_at;
 @property (nonatomic,copy) NSString *ID;
 @property (nonatomic,copy) NSString *name;
-@property (nonatomic,copy) NSString *times;
-
+@property (nonatomic,copy) NSString *school_id;
+@property (nonatomic,strong) NSMutableArray *items;
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end

@@ -10,4 +10,5 @@
 
 @interface PurifyControlViewController : UIViewController
 @property (nonatomic,copy) NSString *classroom_id;
+@property (nonatomic,copy) NSString *ID;
 @end

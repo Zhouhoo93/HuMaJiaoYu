@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *changgeOnBtn;
 @property (weak, nonatomic) IBOutlet UIButton *changgeOffBtn;
 @property (nonatomic,copy) NSString *classroom_id;
+@property (nonatomic,copy) NSString *IID;
 @property (nonatomic,copy) NSString *bid;
 @property (nonatomic,copy) NSString *location;
 @property (nonatomic,copy) NSString *qingjing;

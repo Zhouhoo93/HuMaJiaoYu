@@ -622,30 +622,20 @@
 
 
 -(void)requestFangan{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/lplan/plan",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/plans/light/all",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:token forKey:@"token"];
     
-    [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取灯光方案正确%@",responseObject);
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
+        if ([responseObject[@"code"] intValue] !=0) {
             NSString *str = responseObject[@"result"][@"errorMsg"];
             [MBProgressHUD showText:str];
         }else{
@@ -661,41 +651,41 @@
         //        [MBProgressHUD showText:@"%@",error[@"error"]];
     }];
     
-    
 }
 
 -(void)requestqingjing{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/lscene/scene",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/scenes/air-cleaner/all",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:token forKey:@"token"];
     
-    [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取灯光情景正确%@",responseObject);
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
+        if ([responseObject[@"code"] intValue] !=0) {
             NSString *str = responseObject[@"result"][@"errorMsg"];
             [MBProgressHUD showText:str];
         }else{
-            for (NSDictionary *dic in responseObject[@"content"]) {
-                _lightqingjingModel = [[LightQingJingModel alloc] initWithDictionary:dic];
+            NSMutableArray *arr = responseObject[@"data"];
+            for (int i=0; i<arr.count; i++) {
+                //                for (NSDictionary *dic in arr[i]) {
+                _lightqingjingModel = [[LightQingJingModel alloc] init];
+                _lightqingjingModel.change_air = arr[i][@"change_air"];
+                _lightqingjingModel.ID = arr[i][@"id"];
+                _lightqingjingModel.name = arr[i][@"name"];
+                _lightqingjingModel.school_id = arr[i][@"school_id"];
+                _lightqingjingModel.speed_value = arr[i][@"speed_value"];
+                _lightqingjingModel.uv_value = arr[i][@"uv_value"];
+                //                    _lightqingjingModel = [[LightQingJingModel alloc] initWithDictionary:dic];
                 [self.lightqingjingArr addObject:_lightqingjingModel];
+                //                }
             }
+            
             
         }
         
@@ -709,29 +699,19 @@
 
 
 -(void)SendData{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/air_cleaners/air_cleaner/open-airCleaner",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@/air-cleaner-ctrl",kUrl,self.IID];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+   
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:token forKey:@"token"];
     [parameters setValue:self.classroom_id forKey:@"classroom_id"];
     [parameters setValue:self.wind_speed forKey:@"wind_speed"];
     [parameters setValue:self.uv_on forKey:@"uv_on"];
     [parameters setValue:self.fresh_air_open forKey:@"fresh_air_open"];
-    [parameters setValue:self.runmodel forKey:@"run_model"];
+    [parameters setValue:self.runmodel forKey:@"run_mode"];
     [parameters setValue:self.device_on forKey:@"device_on"];
     [parameters setValue:self.bid forKey:@"bid"];
     NSLog(@"%@",parameters);
@@ -739,10 +719,10 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"设置净化器正确%@",responseObject);
 
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            NSNumber *code = responseObject[@"result"][@"errorCode"];
+        if ([responseObject[@"code"] intValue] !=0) {
+            NSNumber *code = responseObject[@"code"];
             NSString *errorcode = [NSString stringWithFormat:@"%@",code];
-            if ([errorcode isEqualToString:@"4200"])  {
+            if ([errorcode isEqualToString:@"4003"])  {
                 [MBProgressHUD showText:@"请重新登陆"];
                 [self newLogin];
             }else{

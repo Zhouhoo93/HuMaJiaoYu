@@ -66,6 +66,7 @@
     vc.fangan= self.fanganLabel.text;
     vc.classroom_id = _model.classroom_id;
     vc.bid = _model.bid;
+    vc.IID = self.ID;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -104,7 +105,7 @@
     
     if (self.selectedIndexPath==0) {
 //        _lightqingjingModel = self.lightqingjingArr[row];
-        _model = self.dataArr[row];
+//        _model = self.dataArr[row];
 //        self.bid = _lightqingjingModel.ID;
         self.statusLabel.text = str;
         for (int i=0; i<self.lightqingjingArr.count; i++) {
@@ -243,30 +244,20 @@
 
 
 -(void)requestFangan{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/lplan/plan",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/plans/light/all",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:token forKey:@"token"];
     
-    [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取灯光方案正确%@",responseObject);
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
+        if ([responseObject[@"code"] intValue] !=0) {
             NSString *str = responseObject[@"result"][@"errorMsg"];
             [MBProgressHUD showText:str];
         }else{
@@ -286,37 +277,38 @@
 }
 
 -(void)requestqingjing{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/lscene/scene",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/scenes/air-cleaner/all",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:token forKey:@"token"];
     
-    [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取灯光情景正确%@",responseObject);
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
+        if ([responseObject[@"code"] intValue] !=0) {
             NSString *str = responseObject[@"result"][@"errorMsg"];
             [MBProgressHUD showText:str];
         }else{
-            for (NSDictionary *dic in responseObject[@"content"]) {
-                _lightqingjingModel = [[LightQingJingModel alloc] initWithDictionary:dic];
-                [self.lightqingjingArr addObject:_lightqingjingModel];
+            NSMutableArray *arr = responseObject[@"data"];
+            for (int i=0; i<arr.count; i++) {
+//                for (NSDictionary *dic in arr[i]) {
+                    _lightqingjingModel = [[LightQingJingModel alloc] init];
+                    _lightqingjingModel.change_air = arr[i][@"change_air"];
+                    _lightqingjingModel.ID = arr[i][@"id"];
+                    _lightqingjingModel.name = arr[i][@"name"];
+                    _lightqingjingModel.school_id = arr[i][@"school_id"];
+                    _lightqingjingModel.speed_value = arr[i][@"speed_value"];
+                    _lightqingjingModel.uv_value = arr[i][@"uv_value"];
+//                    _lightqingjingModel = [[LightQingJingModel alloc] initWithDictionary:dic];
+                    [self.lightqingjingArr addObject:_lightqingjingModel];
+//                }
             }
+            
             
         }
         
@@ -329,25 +321,14 @@
 }
 
 -(void)requestData{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/air_cleaners/air_cleaner",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@",kUrl,self.ID];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setValue:self.classroom_id forKey:@"classroom_id"];
+    [parameters setValue:token forKey:@"token"];
     [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         

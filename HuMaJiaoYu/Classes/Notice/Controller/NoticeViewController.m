@@ -106,9 +106,9 @@
         MyLog(@"获取文章正确%@",responseObject);
 
         if ([responseObject[@"code"] intValue] !=0) {
-            NSNumber *code = responseObject[@"result"][@"errorCode"];
+            NSNumber *code = responseObject[@"code"];
             NSString *errorcode = [NSString stringWithFormat:@"%@",code];
-            if ([errorcode isEqualToString:@"4200"])  {
+            if ([errorcode isEqualToString:@"4003"])  {
                 [MBProgressHUD showText:@"请重新登陆"];
                 [self newLogin];
             }else{

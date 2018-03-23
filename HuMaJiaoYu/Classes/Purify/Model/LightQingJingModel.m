@@ -23,7 +23,7 @@
         self.ID = value;
     }
     if ([key isEqualToString:@"auto"]) {
-        self.Auto = value;
+//        self.Auto = value;
     }
 }
 

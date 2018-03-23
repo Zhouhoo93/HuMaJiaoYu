@@ -280,15 +280,15 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取个人信息正确%@",responseObject);
-
-        if ([responseObject[@"result"][@"success"] intValue] !=0) {
-            NSNumber *code = responseObject[@"result"][@"errorCode"];
+        NSNumber *code = responseObject[@"code"];
+        if (code !=0) {
+            
             NSString *errorcode = [NSString stringWithFormat:@"%@",code];
-            if ([errorcode isEqualToString:@"4200"])  {
+            if ([errorcode isEqualToString:@"4003"])  {
                 [MBProgressHUD showText:@"请重新登陆"];
                 [self newLogin];
             }else{
-            NSString *str = responseObject[@"result"][@"errorMsg"];
+            NSString *str = responseObject[@"msg"];
             [MBProgressHUD showText:str];
             }
         }else{
