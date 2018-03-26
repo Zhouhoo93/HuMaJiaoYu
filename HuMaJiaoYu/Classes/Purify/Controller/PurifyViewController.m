@@ -113,13 +113,14 @@
         _model = _dataArr[indexPath.row];
         _modelTwo = _model.room;
         vc.classroom_id = _model.room[@"classroom_id"];
-        vc.ID = _model.room[@"id"];
+        vc.ID = _model.ID;
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         LightViewController *vc = [[LightViewController alloc] init];
                 _model = _dataArr[indexPath.row];
         _modelTwo = _model.room;
                 vc.classroom_id = _model.room[@"classroom_id"];
+        vc.ID = _model.ID;
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -130,7 +131,7 @@
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *token = [userDefaults valueForKey:@"token"];
-        [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+//        [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
 //        NSString *type = [userDefaults valueForKey:@"type"];
 //        NSString *page = [NSString new];
 //        if([type isEqualToString:@"学生"]){
@@ -150,17 +151,40 @@
             MyLog(@"获取净化器列表正确%@",responseObject);
             NSNumber *code = responseObject[@"code"];
             if ([[code stringValue] isEqualToString:@"0"]) {
-                NSArray *arr = responseObject[@"data"];
-                if (arr.count>0) {
-                    for (int i=0; i<arr.count; i++) {
-                        NSDictionary *dic = arr[i];
-                        _model = [[ClassListModel alloc] initWithDictionary:dic];
-                        [self.dataArr addObject:_model];
+                if ([self.type isEqualToString:@"净化器"]) {
+                    NSArray *arr = responseObject[@"data"];
+                    if (arr.count>0) {
+                        for (int i=0; i<arr.count; i++) {
+                            NSDictionary *dic = arr[i];
+                            NSInteger ss = [dic[@"type"] integerValue];
+                            if (ss==2) {
+                                _model = [[ClassListModel alloc] initWithDictionary:dic];
+                                [self.dataArr addObject:_model];
+                            }
+                           
+                        }
+                        [self.collectionView reloadData];
+                    }else{
+                        [MBProgressHUD showText:@"暂无班级列表"];
                     }
-                    [self.collectionView reloadData];
-                }else{
-                    [MBProgressHUD showText:@"暂无班级列表"];
+                }else if ([self.type isEqualToString:@"灯光"]){
+                    NSArray *arr = responseObject[@"data"];
+                    if (arr.count>0) {
+                        for (int i=0; i<arr.count; i++) {
+                            NSDictionary *dic1 = arr[i];
+                            NSInteger ss1 = [dic1[@"type"] integerValue];
+                            if (ss1==1) {
+                                _model = [[ClassListModel alloc] initWithDictionary:dic1];
+                                [self.dataArr addObject:_model];
+                            }
+                            
+                        }
+                        [self.collectionView reloadData];
+                    }else{
+                        [MBProgressHUD showText:@"暂无班级列表"];
+                    }
                 }
+                
                 
             }else{
                 

@@ -32,6 +32,8 @@
 @property (nonatomic,assign)CGFloat oldblack;
 @property (assign,nonatomic) NSInteger* selectedIndexPath ;
 @property (nonatomic,copy) NSString *bid;
+@property (nonatomic,copy) NSString *planID;
+@property (nonatomic,copy) NSString *fangID;
 @end
 
 @implementation LightViewController
@@ -235,10 +237,12 @@
     [parameters setValue:token forKey:@"token"];
     [parameters setValue:self.ID forKey:@"id"];
     //黑板灯
-    NSString *heiban = [NSString stringWithFormat:@"%f",self.sliderone.value];
+    NSInteger hei = self.sliderone.value/10;
+    NSString *heiban = [NSString stringWithFormat:@"%d",hei];
     [parameters setValue:heiban forKey:@"bv"];
     //教室灯
-    NSString *jiaoshi = [NSString stringWithFormat:@"%f",self.slidertwo.value];
+    NSInteger jiao = self.slidertwo.value/10;
+    NSString *jiaoshi = [NSString stringWithFormat:@"%d",jiao];
     [parameters setValue:jiaoshi forKey:@"cv"];
 
     NSLog(@"%@",parameters);
@@ -274,39 +278,35 @@
     
 }
 -(void)SendPlan{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/lplan/plan/%@",kUrl,self.bid];
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@/update-plan",kUrl,self.ID];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
     [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
     NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+    
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setValue:self.planLabel.text forKey:@"plan"];
+    [parameters setValue:self.fangID forKey:@"plan_id"];
+     [parameters setValue:self.ID forKey:@"id"];
     NSLog(@"%@",parameters);
 
-    [manager PUT:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"设置d灯光正确%@",responseObject);
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            NSString *str = responseObject[@"result"][@"errorMsg"];
-            [MBProgressHUD showText:str];
+        if ([responseObject[@"code"] intValue] !=0) {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text =responseObject[@"msg"];
+            [hud hideAnimated:YES afterDelay:2.f];
             //            self.sliderone.value = self.oldClass;
             //            self.slidertwo.value = self.oldblack;
         }else{
             //            self.oldClass = self.sliderone.value;
             //            self.oldblack = self.slidertwo.value;
             //            [self requestData];
-            
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text =@"设置成功";
+            [hud hideAnimated:YES afterDelay:2.f];
         }
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -316,41 +316,36 @@
 }
 
 -(void)SendQingjing{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/lights/light/change-scene",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@/update-scene",kUrl,self.ID];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
     [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
     NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+  
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setValue:self.classroom_id forKey:@"classroom_id"];
-    [parameters setValue:self.bid forKey:@"scene_id"];
+    [parameters setValue:self.ID forKey:@"id"];
+    [parameters setValue:self.planID forKey:@"scene_id"];
 
     NSLog(@"%@",parameters);
     
     [manager POST:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"设置d灯光正确%@",responseObject);
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            NSString *str = responseObject[@"result"][@"errorMsg"];
-            [MBProgressHUD showText:str];
+        if ([responseObject[@"code"] intValue] !=0) {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text =responseObject[@"msg"];
+            [hud hideAnimated:YES afterDelay:2.f];
             //            self.sliderone.value = self.oldClass;
             //            self.slidertwo.value = self.oldblack;
         }else{
             //            self.oldClass = self.sliderone.value;
             //            self.oldblack = self.slidertwo.value;
             //            [self requestData];
-            
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text =@"设置成功";
+            [hud hideAnimated:YES afterDelay:2.f];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -378,7 +373,7 @@
             NSString *str = responseObject[@"msg"];
             [MBProgressHUD showText:str];
         }else{
-            for (NSDictionary *dic in responseObject[@"content"]) {
+            for (NSDictionary *dic in responseObject[@"data"]) {
                 _lightplanModel = [[LightPlanModel alloc] initWithDictionary:dic];
                 [self.lightplanArr addObject:_lightplanModel];
             }
@@ -505,7 +500,7 @@
     
     if (self.selectedIndexPath==0) {
 //        _lightqingjingModel = self.lightqingjingArr[row];
-        _model = self.dataArr[row];
+//        _model = self.dataArr[row];
 //        self.bid = _lightqingjingModel.ID;
         self.qingjingLabel.text = str;
         for (int i=0; i<self.lightqingjingArr.count; i++) {
@@ -513,6 +508,7 @@
             NSString *string = [NSString stringWithFormat:@"%@",_lightqingjingModel.name];
             if ([string isEqualToString:str]) {
                 self.bid = _lightqingjingModel.ID;
+                self.planID = _lightplanModel.ID;
             }
         }
         [self SendQingjing];
@@ -521,6 +517,7 @@
         _lightplanModel = self.lightplanArr[row];
         self.bid = _lightplanModel.ID;
         self.planLabel.text = str;
+        self.fangID = _lightplanModel.ID;
         [self SendPlan];
     }
     
