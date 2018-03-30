@@ -66,8 +66,8 @@
     vc.location = self.locationLabel.titleLabel.text;
     vc.qingjing = self.statusLabel.text;
     vc.fangan= self.fanganLabel.text;
-    vc.classroom_id = _model.classroom_id;
-    vc.bid = _model.bid;
+//    vc.classroom_id = _model.classroom_id;
+//    vc.bid = _model.bid;
     vc.IID = self.ID;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -170,6 +170,7 @@
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setValue:self.ID forKey:@"id"];
     [parameters setValue:self.fangID forKey:@"plan_id"];
+    [parameters setValue:token forKey:@"token"];
     NSLog(@"%@",parameters);
     
     [manager POST:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -209,7 +210,7 @@
 
     [parameters setValue:self.ID forKey:@"id"];
     [parameters setValue:self.planID forKey:@"scene_id"];
-
+    [parameters setValue:token forKey:@"token"];
    
     NSLog(@"%@",parameters);
     
@@ -260,6 +261,9 @@
             for (NSDictionary *dic in responseObject[@"data"]) {
                 _lightplanModel = [[LightPlanModel alloc] initWithDictionary:dic];
                 [self.lightplanArr addObject:_lightplanModel];
+                if (_lightplanModel.ID ==self.plan_id) {
+                    self.fanganLabel.text = _lightplanModel.name;
+                }
             }
             
         }
@@ -301,6 +305,9 @@
                     _lightqingjingModel.speed_value = arr[i][@"speed_value"];
                     _lightqingjingModel.uv_value = arr[i][@"uv_value"];
 //                    _lightqingjingModel = [[LightQingJingModel alloc] initWithDictionary:dic];
+                if (_lightqingjingModel.ID ==self.scene_id) {
+                    self.statusLabel.text = _lightqingjingModel.name;
+                }
                     [self.lightqingjingArr addObject:_lightqingjingModel];
 //                }
             }
@@ -343,21 +350,21 @@
             [MBProgressHUD showText:str];
             }
         }else{
-            NSArray *arr = responseObject[@"content"][@"data"];
+            NSArray *arr = responseObject[@"data"];
             if (arr.count>0) {
-                for (NSDictionary *dic in responseObject[@"content"][@"data"]) {
+                for (NSDictionary *dic in responseObject[@"data"]) {
                     _model = [[PurifyModel alloc] initWithDictionary:dic];
                     [self.dataArr addObject:_model];
                 }
-                [self.locationLabel setTitle:_model.localtion forState:UIControlStateNormal];
-                self.statusLabel.text = _model.sence_name;
+//                [self.locationLabel setTitle:_model.localtion forState:UIControlStateNormal];
+                self.statusLabel.text = _model.scene_name;
                 self.fanganLabel.text = _model.plan_name;
                 //            self.fanganLabel.text =
-                self.wenduLabel.text = [NSString stringWithFormat:@"%@℃",_model.temperature];
-                self.TVOCLabel.text = [NSString stringWithFormat:@"%@mg/m³",_model.TVOC];
-                self.shiduLabel.text = [NSString stringWithFormat:@"%@%%",_model.wind_peed];
-                self.PMLabel.text = [NSString stringWithFormat:@"%@mg/m³",_model.PM25];
-                self.co2Label.text = [NSString stringWithFormat:@"%@ppm",_model.CO2];
+//                self.wenduLabel.text = [NSString stringWithFormat:@"%@℃",_model.temperature];
+//                self.TVOCLabel.text = [NSString stringWithFormat:@"%@mg/m³",_model.TVOC];
+//                self.shiduLabel.text = [NSString stringWithFormat:@"%@%%",_model.wind_peed];
+//                self.PMLabel.text = [NSString stringWithFormat:@"%@mg/m³",_model.PM25];
+//                self.co2Label.text = [NSString stringWithFormat:@"%@ppm",_model.CO2];
 
             }else{
                 [MBProgressHUD showText:@"当前教室没有硬件"];

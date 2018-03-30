@@ -288,8 +288,8 @@
                 [MBProgressHUD showText:@"请重新登陆"];
                 [self newLogin];
             }else{
-            NSString *str = responseObject[@"msg"];
-            [MBProgressHUD showText:str];
+//            NSString *str = responseObject[@"msg"];
+//            [MBProgressHUD showText:str];
             }
         }else{
             if([responseObject[@"content"] isEqual:[NSNull null]])

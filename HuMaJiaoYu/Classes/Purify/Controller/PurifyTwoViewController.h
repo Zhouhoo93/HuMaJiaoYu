@@ -29,4 +29,6 @@
 @property (nonatomic,copy) NSString *wind_speed;
 @property (nonatomic,copy) NSString *uv_on;
 @property (nonatomic,copy) NSString *fresh_air_open;
+@property (nonatomic,copy) NSString *scene_id;
+@property (nonatomic,copy) NSString *plan_id;
 @end

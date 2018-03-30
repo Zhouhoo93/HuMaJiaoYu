@@ -92,11 +92,11 @@
                                                 <constraint firstAttribute="height" constant="30" id="Ehc-uS-fI9"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <state key="normal" title="1-001过道">
+                                            <state key="normal">
                                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="晚上" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UjF-dF-lh8">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UjF-dF-lh8">
                                             <rect key="frame" x="135" y="59" width="199" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="RH2-12-AV1"/>
@@ -112,7 +112,7 @@
                                                 <constraint firstAttribute="width" constant="6" id="Kg1-6Z-nJk"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="方案一" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ha0-FA-zOb">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ha0-FA-zOb">
                                             <rect key="frame" x="135" y="103" width="199" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="iU1-92-VYu"/>
@@ -571,7 +571,7 @@
         <image name="个人中心三角" width="9" height="17"/>
         <image name="图层-35-拷贝" width="11" height="12"/>
         <image name="圆角矩形-2" width="375" height="406"/>
-        <image name="圆角矩形-3" width="131" height="57"/>
+        <image name="圆角矩形-3" width="341" height="32"/>
         <image name="组-10" width="40" height="40"/>
         <image name="组-11" width="40" height="40"/>
         <image name="组-12" width="40" height="40"/>

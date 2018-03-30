@@ -35,7 +35,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"设备管理";
-    [self requestAirData];
+//    [self requestAirData];
     [self setButton];
     [self requestData];
     [self requestqingjing];
@@ -394,47 +394,41 @@
 
 }
 -(void)requestData{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/air_cleaners_data/data",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@",kUrl,self.IID];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    NSLog(@"token:%@",token);
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setValue:self.classroom_id forKey:@"classroom_id"];
-    NSLog(@"%@",self.classroom_id);
+    [parameters setValue:token forKey:@"token"];
     [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         MyLog(@"获取净化器正确%@",responseObject);
 
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            NSNumber *code = responseObject[@"result"][@"errorCode"];
+        if ([responseObject[@"code"] intValue] !=0) {
+            NSNumber *code = responseObject[@"code"];
             NSString *errorcode = [NSString stringWithFormat:@"%@",code];
             if ([errorcode isEqualToString:@"4200"])  {
                 [MBProgressHUD showText:@"请重新登陆"];
                 [self newLogin];
             }else{
-            NSString *str = responseObject[@"result"][@"errorMsg"];
+            NSString *str = responseObject[@"msg"];
             [MBProgressHUD showText:str];
             }
         }else{
-            NSArray *arr = responseObject[@"content"];
+            NSMutableDictionary *arr = responseObject[@"data"];
             if (arr.count>0) {
-                NSNumber *wind_peed = responseObject[@"content"][0][@"wind_peed"];
-                NSNumber *uv_on = responseObject[@"content"][0][@"uv_on"];
-                NSNumber *fresh_air_open = responseObject[@"content"][0][@"fresh_air_open"];
+                self.classroom_id = arr[@"room"][@"classroom_id"];
+                //            self.bid = dic[@"bid"];
+                self.device_on = arr[@"ctrl_data"][@"device_on"];
+                self.uv_on= arr[@"ctrl_data"][@"uv_on"];
+                self.fresh_air_open = arr[@"ctrl_data"][@"fresh_air_open"];
+                self.wenduLabel.text = [NSString stringWithFormat:@"%@",arr[@"temperature"]];
+                
+                NSNumber *wind_peed = arr[@"ctrl_data"][@"wind_speed"];
+                NSNumber *uv_on = arr[@"ctrl_data"][@"uv_on"];
+                NSNumber *fresh_air_open = arr[@"ctrl_data"][@"fresh_air_open"];
                 _wind_speed = [NSString stringWithFormat:@"%@",wind_peed];
                 _uv_on = [NSString stringWithFormat:@"%@",uv_on];
                 _fresh_air_open = [NSString stringWithFormat:@"%@",fresh_air_open];
@@ -486,56 +480,70 @@
 }
 
 -(void)requestAirData{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/air_cleaners/air_cleaner",kUrl];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
-    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setValue:self.classroom_id forKey:@"classroom_id"];
-    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        MyLog(@"获取净化器数据正确%@",responseObject);
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            NSString *str = responseObject[@"result"][@"errorMsg"];
-            [MBProgressHUD showText:str];
+   
+NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@",kUrl,self.IID];
+AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+NSString *token = [userDefaults valueForKey:@"token"];
+//    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+
+NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+[parameters setValue:token forKey:@"token"];
+[manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    
+    
+} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    MyLog(@"获取净化器数据正确%@",responseObject);
+    
+    
+    if ([responseObject[@"code"] intValue] !=0) {
+        NSNumber *code = responseObject[@"code"];
+        NSString *errorcode = [NSString stringWithFormat:@"%@",code];
+        if ([errorcode isEqualToString:@"4200"])  {
+            [MBProgressHUD showText:@"请重新登陆"];
+            [self newLogin];
         }else{
-            
-            
-            for (NSDictionary *dic in responseObject[@"content"][@"data"]) {
+            NSString *str = responseObject[@"msg"];
+            [MBProgressHUD showText:str];
+        }
+    }else{
+        NSMutableDictionary *arr = responseObject[@"data"];
+//        if (arr.count>0) {
+            for (NSDictionary *dic in responseObject[@"data"]) {
                 _model = [[PurifyModel alloc] initWithDictionary:dic];
                 [self.dataArr addObject:_model];
-                self.classroom_id = dic[@"classroom_id"];
-                self.bid = dic[@"bid"];
-                self.device_on = dic[@"device_on"];
-                self.uv_on= dic[@"uv_on"];
-                self.fresh_air_open = dic[@"fresh_air_open"];
-                self.wenduLabel.text = [NSString stringWithFormat:@"%@",dic[@"temperature"]];
             }
             
-
-        }
+            self.classroom_id = arr[@"room"][@"classroom_id"];
+//            self.bid = dic[@"bid"];
+            self.device_on = arr[@"ctrl_data"][@"device_on"];
+            self.uv_on= arr[@"ctrl_data"][@"uv_on"];
+            self.fresh_air_open = arr[@"ctrl_data"][@"fresh_air_open"];
+            self.wenduLabel.text = [NSString stringWithFormat:@"%@",arr[@"temperature"]];
+            
+//            [self.locationLabel setTitle:_model.localtion forState:UIControlStateNormal];
+//            self.statusLabel.text = _model.sence_name;
+//            self.fanganLabel.text = _model.plan_name;
+//            //            self.fanganLabel.text =
+//            self.wenduLabel.text = [NSString stringWithFormat:@"%@℃",_model.temperature];
+//            self.TVOCLabel.text = [NSString stringWithFormat:@"%@mg/m³",_model.TVOC];
+//            self.shiduLabel.text = [NSString stringWithFormat:@"%@%%",_model.wind_peed];
+//            self.PMLabel.text = [NSString stringWithFormat:@"%@mg/m³",_model.PM25];
+//            self.co2Label.text = [NSString stringWithFormat:@"%@ppm",_model.CO2];
+            
+//        }else{
+//            [MBProgressHUD showText:@"当前教室没有硬件"];
+//            //                [self.navigationController popViewControllerAnimated:YES];
+//        }
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        MyLog(@"失败%@",error);
-        //        [MBProgressHUD showText:@"%@",error[@"error"]];
-    }];
+    }
     
-    
+} failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    MyLog(@"失败%@",error);
+    //        [MBProgressHUD showText:@"%@",error[@"error"]];
+}];
+
+
 }
 
 
@@ -551,6 +559,7 @@
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setValue:self.ID forKey:@"id"];
     [parameters setValue:self.fangID forKey:@"plan_id"];
+    [parameters setValue:token forKey:@"token"];
     NSLog(@"%@",parameters);
     
     [manager POST:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -589,6 +598,7 @@
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setValue:self.ID forKey:@"id"];
     [parameters setValue:self.planID forKey:@"scene_id"];
+    [parameters setValue:token forKey:@"token"];
     NSLog(@"%@",parameters);
     
     [manager POST:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -638,6 +648,9 @@
             for (NSDictionary *dic in responseObject[@"data"]) {
                 _lightplanModel = [[LightPlanModel alloc] initWithDictionary:dic];
                 [self.lightplanArr addObject:_lightplanModel];
+                if (_lightplanModel.ID ==self.plan_id) {
+                    self.fanganLabel.text = _lightplanModel.name;
+                }
             }
             
         }
@@ -679,6 +692,9 @@
                 _lightqingjingModel.uv_value = arr[i][@"uv_value"];
                 //                    _lightqingjingModel = [[LightQingJingModel alloc] initWithDictionary:dic];
                 [self.lightqingjingArr addObject:_lightqingjingModel];
+                if (_lightqingjingModel.ID ==self.scene_id) {
+                    self.qingjingLabel.text = _lightqingjingModel.name;
+                }
                 //                }
             }
             

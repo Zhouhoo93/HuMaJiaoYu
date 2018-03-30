@@ -114,6 +114,8 @@
         _modelTwo = _model.room;
         vc.classroom_id = _model.room[@"classroom_id"];
         vc.ID = _model.ID;
+        vc.scene_id = _model.scene_id;
+        vc.plan_id = _model.plan_id;
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         LightViewController *vc = [[LightViewController alloc] init];
@@ -121,6 +123,12 @@
         _modelTwo = _model.room;
                 vc.classroom_id = _model.room[@"classroom_id"];
         vc.ID = _model.ID;
+        
+        vc.scene_id = _model.scene_id;
+        vc.plan_id = _model.plan_id;
+        NSDictionary *dic = _model.ctrl_data;
+        vc.jiaoshi = [dic[@"classroom_value"] floatValue];
+        vc.heiban = [dic[@"blackboard_value"] floatValue];
         [self.navigationController pushViewController:vc animated:YES];
     }
     

@@ -83,6 +83,9 @@
     _sliders = @[_sliderone, _slidertwo];
     [_sliderone showPopUpView];
     [_slidertwo showPopUpView];
+    self.sliderone.value = self.jiaoshi;
+    self.slidertwo.value = self.heiban;
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *type = [userDefaults valueForKey:@"type"];
     if([type isEqualToString:@"教师"]){
@@ -288,6 +291,7 @@
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setValue:self.fangID forKey:@"plan_id"];
      [parameters setValue:self.ID forKey:@"id"];
+    [parameters setValue:token forKey:@"token"];
     NSLog(@"%@",parameters);
 
     [manager POST:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -326,7 +330,7 @@
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setValue:self.ID forKey:@"id"];
     [parameters setValue:self.planID forKey:@"scene_id"];
-
+     [parameters setValue:token forKey:@"token"];
     NSLog(@"%@",parameters);
     
     [manager POST:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -375,6 +379,9 @@
         }else{
             for (NSDictionary *dic in responseObject[@"data"]) {
                 _lightplanModel = [[LightPlanModel alloc] initWithDictionary:dic];
+                if (_lightplanModel.ID ==self.plan_id) {
+                    self.planLabel.text = _lightplanModel.name;
+                }
                 [self.lightplanArr addObject:_lightplanModel];
             }
             
@@ -408,6 +415,7 @@
         }else{
             NSMutableArray *arr = responseObject[@"data"];
             for (int i=0; i<arr.count; i++) {
+                
                 //                for (NSDictionary *dic in arr[i]) {
                 _lightqingjingModel = [[LightQingJingModel alloc] init];
                 _lightqingjingModel.change_air = arr[i][@"change_air"];
@@ -417,6 +425,9 @@
                 _lightqingjingModel.speed_value = arr[i][@"speed_value"];
                 _lightqingjingModel.uv_value = arr[i][@"uv_value"];
                 //                    _lightqingjingModel = [[LightQingJingModel alloc] initWithDictionary:dic];
+                if (_lightqingjingModel.ID ==self.scene_id) {
+                    self.qingjingLabel.text = _lightqingjingModel.name;
+                }
                 [self.lightqingjingArr addObject:_lightqingjingModel];
                 //                }
             }

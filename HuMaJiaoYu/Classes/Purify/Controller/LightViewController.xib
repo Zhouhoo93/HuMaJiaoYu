@@ -71,7 +71,7 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1-001过道" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXX-Rs-uAp">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXX-Rs-uAp">
                             <rect key="frame" x="137" y="15" width="211" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="Izu-kU-eu2"/>
@@ -80,7 +80,7 @@
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="晚上" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBa-aC-60k">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBa-aC-60k">
                             <rect key="frame" x="137" y="59" width="199" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="Y67-jG-4wL"/>
@@ -96,7 +96,7 @@
                                 <constraint firstAttribute="width" constant="6" id="uQH-cl-0Xj"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="方案一" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Am-eP-Rfk">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Am-eP-Rfk">
                             <rect key="frame" x="137" y="103" width="199" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="EnI-Yj-gZ2"/>
@@ -227,7 +227,7 @@
                     <state key="normal" title="一键开启" backgroundImage="button:5TD-E8-lKo:backgroundImage">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
-                    <state key="selected" title="一键开启" backgroundImage="973E41F8-EB1B-414F-9456-963F7D3456F6">
+                    <state key="selected" title="一键开启" backgroundImage="C5302B2F-0687-4E96-A0BB-1E84211F1F0F">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -243,7 +243,7 @@
                     <state key="normal" title="一键关闭" backgroundImage="button:5TD-E8-lKo:backgroundImage">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
-                    <state key="selected" title="一键关闭" backgroundImage="973E41F8-EB1B-414F-9456-963F7D3456F6">
+                    <state key="selected" title="一键关闭" backgroundImage="C5302B2F-0687-4E96-A0BB-1E84211F1F0F">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -398,7 +398,7 @@
         </view>
     </objects>
     <resources>
-        <image name="973E41F8-EB1B-414F-9456-963F7D3456F6" width="96" height="39">
+        <image name="C5302B2F-0687-4E96-A0BB-1E84211F1F0F" width="96" height="39">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
