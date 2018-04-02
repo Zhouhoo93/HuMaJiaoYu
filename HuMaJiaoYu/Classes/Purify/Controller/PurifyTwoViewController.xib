@@ -13,6 +13,9 @@
             <connections>
                 <outlet property="UVLightOffBtn" destination="Y7T-Rg-sMV" id="jQJ-ys-48k"/>
                 <outlet property="UVlightONBtn" destination="n1O-b5-2rY" id="MQC-ZR-8aZ"/>
+                <outlet property="autoBtn" destination="RgT-O1-qmW" id="8kW-ai-lqH"/>
+                <outlet property="autoOffBtn" destination="4Wo-mW-B8W" id="xHr-ao-EOo"/>
+                <outlet property="autoOnBtn" destination="A11-6M-yX3" id="6iF-nY-szt"/>
                 <outlet property="buttonView" destination="tRz-ib-8y7" id="d9l-Go-s9z"/>
                 <outlet property="changgeOffBtn" destination="ZaC-v0-JDf" id="Bhi-XT-Qml"/>
                 <outlet property="changgeOnBtn" destination="B2V-Gh-oor" id="LC1-qh-god"/>
@@ -437,7 +440,7 @@
         <image name="关" width="14" height="14"/>
         <image name="净化器温度" width="131" height="131"/>
         <image name="圆角矩形-2" width="375" height="406"/>
-        <image name="圆角矩形-4" width="96" height="39"/>
+        <image name="圆角矩形-4" width="57" height="31"/>
         <image name="圆角矩形-4-拷贝" width="96" height="39"/>
         <image name="开" width="14" height="13"/>
         <image name="开ON" width="23" height="23"/>

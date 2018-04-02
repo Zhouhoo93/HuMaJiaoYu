@@ -11,6 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LightViewController">
             <connections>
+                <outlet property="autoOffBtn" destination="VnT-6l-zm5" id="upy-QO-Idg"/>
+                <outlet property="autoOnBtn" destination="5TD-E8-lKo" id="0fQ-zq-hbe"/>
                 <outlet property="locationLabel" destination="KXX-Rs-uAp" id="kWM-pK-rsJ"/>
                 <outlet property="planLabel" destination="4Am-eP-Rfk" id="Ogf-HM-ZTt"/>
                 <outlet property="qingjingLabel" destination="IBa-aC-60k" id="JCh-Lq-2Pf"/>
@@ -227,7 +229,7 @@
                     <state key="normal" title="一键开启" backgroundImage="button:5TD-E8-lKo:backgroundImage">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
-                    <state key="selected" title="一键开启" backgroundImage="C5302B2F-0687-4E96-A0BB-1E84211F1F0F">
+                    <state key="selected" title="一键开启" backgroundImage="C8C40695-09C7-4A4F-ACE4-8804BAAF1705">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -243,7 +245,7 @@
                     <state key="normal" title="一键关闭" backgroundImage="button:5TD-E8-lKo:backgroundImage">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
-                    <state key="selected" title="一键关闭" backgroundImage="C5302B2F-0687-4E96-A0BB-1E84211F1F0F">
+                    <state key="selected" title="一键关闭" backgroundImage="C8C40695-09C7-4A4F-ACE4-8804BAAF1705">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -398,7 +400,7 @@
         </view>
     </objects>
     <resources>
-        <image name="C5302B2F-0687-4E96-A0BB-1E84211F1F0F" width="96" height="39">
+        <image name="C8C40695-09C7-4A4F-ACE4-8804BAAF1705" width="96" height="39">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

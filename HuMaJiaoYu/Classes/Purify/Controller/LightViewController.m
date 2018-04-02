@@ -139,26 +139,14 @@
 
 
 -(void)requestData{
-    NSString *URL = [NSString stringWithFormat:@"%@/app/lights/light",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@",kUrl,self.ID];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *page = [NSString new];
-    if([type isEqualToString:@"学生"]){
-        page = @"appstu";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else if([type isEqualToString:@"家长"]){
-        page = @"appfamily";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }else{
-        page = @"appteacher";
-        [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
-    }
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setValue:self.classroom_id forKey:@"classroom_id"];
-    NSLog(@"class:%@",self.classroom_id);
+    [parameters setValue:token forKey:@"token"];
     [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
@@ -173,27 +161,29 @@
                 [self newLogin];
             }else{
 
-            NSString *str = responseObject[@"result"][@"errorMsg"];
+            NSString *str = responseObject[@"msg"];
             [MBProgressHUD showText:str];
             }
         }else{
-            NSArray *arr = responseObject[@"content"][@"data"];
+            NSArray *arr = responseObject[@"data"];
             if (arr.count>0) {
-            for (NSDictionary *dic in responseObject[@"content"][@"data"]) {
+            for (NSDictionary *dic in responseObject[@"data"]) {
                 _model = [[LightModel alloc] initWithDictionary:dic];
                 [self.dataArr addObject:_model];
             }
-            self.locationLabel.text = _model.localtion;
-            self.qingjingLabel.text = _model.scene_name;
-            self.planLabel.text = _model.plan_name;
-            for (int i=0; i<_dataArr.count; i++) {
-                _model = _dataArr[i];
+                NSString *str1 = responseObject[@"data"][@"ctrl_data"][@"classroom_value"];
+                NSString *str2 = responseObject[@"data"][@"ctrl_data"][@"blackboard_value"];
+//            self.locationLabel.text = _model.localtion;
+//            self.qingjingLabel.text = _model.scene_name;
+//            self.planLabel.text = _model.plan_name;
+//            for (int i=0; i<_dataArr.count; i++) {
+//                _model = _dataArr[i];
+//
+                    _sliderone.value = [str1 floatValue];
                 
-                    _sliderone.value = [_model.currentbpower floatValue];
+                    _slidertwo.value = [str2 floatValue];
                 
-                    _slidertwo.value = [_model.currentapower floatValue];
-                
-            }
+//            }
             }else{
                 [MBProgressHUD showText:@"当前教室没有硬件"];
 //                [self.navigationController popViewControllerAnimated:YES];
@@ -543,7 +533,11 @@
             sender.selected = NO;
         }else{
             sender.selected = YES;
-
+            self.sliderone.value = 1000;
+            self.slidertwo.value = 1000;
+            self.autoOnBtn.enabled = NO;
+            self.autoOffBtn.selected = NO;
+            [self SendData];
         }
         
     }else {
@@ -559,7 +553,11 @@
             sender.selected = NO;
         }else{
             sender.selected = YES;
-            
+            self.sliderone.value = 0;
+            self.slidertwo.value = 0;
+            self.autoOffBtn.enabled = NO;
+            self.autoOnBtn.selected = NO;
+            [self SendData];
         }
         
     }else {

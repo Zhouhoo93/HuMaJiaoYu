@@ -66,35 +66,37 @@
     if([type isEqualToString:@"教师"]){
         if (sender.selected) {
             sender.selected = NO;
-            self.UVlightONBtn.enabled = YES;
-            self.UVLightOffBtn.enabled = YES;
-            self.changgeOnBtn.enabled = YES;
-            self.changgeOffBtn.enabled = YES;
-            self.oneSpeedBtn.enabled = YES;
-            self.twoSpeedBtn.enabled = YES;
-            self.threeSpeedBtn.enabled = YES;
-            self.runmodel = @"0";
+//            self.UVlightONBtn.enabled = YES;
+//            self.UVLightOffBtn.enabled = YES;
+//            self.changgeOnBtn.enabled = YES;
+//            self.changgeOffBtn.enabled = YES;
+//            self.oneSpeedBtn.enabled = YES;
+//            self.twoSpeedBtn.enabled = YES;
+//            self.threeSpeedBtn.enabled = YES;
+            self.runmodel = @"1";
+            [self Sendauto];
         }else{
             sender.selected = YES;
-            self.UVlightONBtn.selected = YES;
-            self.UVLightOffBtn.selected = NO;
-            self.uv_on = @"1";
-            self.changgeOnBtn.selected = YES;
-            self.changgeOffBtn.selected = NO;
-            self.fresh_air_open = @"1";
-            self.oneSpeedBtn.selected = NO;
-            self.twoSpeedBtn.selected = NO;
-            self.threeSpeedBtn.selected = YES;
-            self.wind_speed = @"3";
-            [self SendData];
-            self.UVlightONBtn.enabled = NO;
-            self.UVLightOffBtn.enabled = NO;
-            self.changgeOnBtn.enabled = NO;
-            self.changgeOffBtn.enabled = NO;
-            self.oneSpeedBtn.enabled = NO;
-            self.twoSpeedBtn.enabled = NO;
-            self.threeSpeedBtn.enabled = NO;
-            self.runmodel = @"1";
+//            self.UVlightONBtn.selected = YES;
+//            self.UVLightOffBtn.selected = NO;
+//            self.uv_on = @"1";
+//            self.changgeOnBtn.selected = YES;
+//            self.changgeOffBtn.selected = NO;
+//            self.fresh_air_open = @"1";
+//            self.oneSpeedBtn.selected = NO;
+//            self.twoSpeedBtn.selected = NO;
+//            self.threeSpeedBtn.selected = YES;
+//            self.wind_speed = @"3";
+//            [self SendData];
+//            self.UVlightONBtn.enabled = NO;
+//            self.UVLightOffBtn.enabled = NO;
+//            self.changgeOnBtn.enabled = NO;
+//            self.changgeOffBtn.enabled = NO;
+//            self.oneSpeedBtn.enabled = NO;
+//            self.twoSpeedBtn.enabled = NO;
+//            self.threeSpeedBtn.enabled = NO;
+            self.runmodel = @"0";
+            [self Sendauto];
         }
         
     }else {
@@ -346,18 +348,21 @@
             sender.selected = NO;
         }else{
             sender.selected = YES;
-            self.UVlightONBtn.selected = YES;
-            self.UVLightOffBtn.selected = NO;
-            self.uv_on = @"1";
-            self.changgeOnBtn.selected = YES;
-            self.changgeOffBtn.selected = NO;
-            self.fresh_air_open = @"1";
-            self.oneSpeedBtn.selected = NO;
-            self.twoSpeedBtn.selected = NO;
-            self.threeSpeedBtn.selected = YES;
-            self.wind_speed = @"3";
-            self.runmodel = @"0";
-            [self SendData];
+//            self.UVlightONBtn.selected = YES;
+//            self.UVLightOffBtn.selected = NO;
+//            self.uv_on = @"1";
+//            self.changgeOnBtn.selected = YES;
+//            self.changgeOffBtn.selected = NO;
+//            self.fresh_air_open = @"1";
+//            self.oneSpeedBtn.selected = NO;
+//            self.twoSpeedBtn.selected = NO;
+//            self.threeSpeedBtn.selected = YES;
+//            self.wind_speed = @"3";
+//            self.runmodel = @"0";
+//            [self SendData];
+            
+            
+            [self Sendkaiqi];
         }
         
     }else {
@@ -374,18 +379,19 @@
             sender.selected = NO;
         }else{
             sender.selected = YES;
-            self.UVlightONBtn.selected = NO;
-            self.UVLightOffBtn.selected = YES;
-            self.uv_on = @"0";
-            self.changgeOnBtn.selected = NO;
-            self.changgeOffBtn.selected = YES;
-            self.fresh_air_open = @"0";
-            self.oneSpeedBtn.selected = NO;
-            self.twoSpeedBtn.selected = NO;
-            self.threeSpeedBtn.selected = NO;
-            self.wind_speed = @"0";
-            self.runmodel = @"0";
-            [self SendData];
+//            self.UVlightONBtn.selected = NO;
+//            self.UVLightOffBtn.selected = YES;
+//            self.uv_on = @"0";
+//            self.changgeOnBtn.selected = NO;
+//            self.changgeOffBtn.selected = YES;
+//            self.fresh_air_open = @"0";
+//            self.oneSpeedBtn.selected = NO;
+//            self.twoSpeedBtn.selected = NO;
+//            self.threeSpeedBtn.selected = NO;
+//            self.wind_speed = @"0";
+//            self.runmodel = @"0";
+//            [self SendData];
+            [self Sendguanbi];
         }
         
     }else {
@@ -393,6 +399,150 @@
     }
 
 }
+
+-(void)Sendkaiqi{
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@/air-cleaner-ctrl",kUrl,self.IID];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userDefaults valueForKey:@"token"];
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:token forKey:@"token"];
+//    [parameters setValue:self.classroom_id forKey:@"classroom_id"];
+//    [parameters setValue:self.wind_speed forKey:@"wind_speed"];
+//    [parameters setValue:self.uv_on forKey:@"uv_on"];
+//    [parameters setValue:self.fresh_air_open forKey:@"fresh_air_open"];
+//    [parameters setValue:self.runmodel forKey:@"run_mode"];
+    [parameters setValue:@"0" forKey:@"device_on"];
+//    [parameters setValue:self.bid forKey:@"bid"];
+    NSLog(@"%@",parameters);
+    [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        MyLog(@"开启净化器正确%@",responseObject);
+        
+        if ([responseObject[@"code"] intValue] !=0) {
+            NSNumber *code = responseObject[@"code"];
+            NSString *errorcode = [NSString stringWithFormat:@"%@",code];
+            if ([errorcode isEqualToString:@"4003"])  {
+                [MBProgressHUD showText:@"请重新登陆"];
+                [self newLogin];
+            }else{
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.label.text =responseObject[@"msg"];
+                [hud hideAnimated:YES afterDelay:2.f];
+            }
+        }else{
+            //            [self requestData];
+            self.autoOffBtn.enabled = YES;
+            self.autoOnBtn.enabled = NO;
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        MyLog(@"失败%@",error);
+        //        [MBProgressHUD showText:@"%@",error[@"error"]];
+    }];
+    
+    
+}
+
+-(void)Sendauto{
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@/air-cleaner-ctrl",kUrl,self.IID];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userDefaults valueForKey:@"token"];
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:token forKey:@"token"];
+    //    [parameters setValue:self.classroom_id forKey:@"classroom_id"];
+    //    [parameters setValue:self.wind_speed forKey:@"wind_speed"];
+    //    [parameters setValue:self.uv_on forKey:@"uv_on"];
+    //    [parameters setValue:self.fresh_air_open forKey:@"fresh_air_open"];
+        [parameters setValue:self.runmodel forKey:@"run_mode"];
+//    [parameters setValue:@"0" forKey:@"device_on"];
+    //    [parameters setValue:self.bid forKey:@"bid"];
+    NSLog(@"%@",parameters);
+    [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        MyLog(@"自动正确%@",responseObject);
+        
+        if ([responseObject[@"code"] intValue] !=0) {
+            NSNumber *code = responseObject[@"code"];
+            NSString *errorcode = [NSString stringWithFormat:@"%@",code];
+            if ([errorcode isEqualToString:@"4003"])  {
+                [MBProgressHUD showText:@"请重新登陆"];
+                [self newLogin];
+            }else{
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.label.text =responseObject[@"msg"];
+                [hud hideAnimated:YES afterDelay:2.f];
+            }
+        }else{
+            //            [self requestData];
+            self.autoOffBtn.selected = NO;
+            self.autoOnBtn.selected = NO;
+            self.autoBtn.enabled = NO;
+            self.autoBtn.selected = YES;
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        MyLog(@"失败%@",error);
+        //        [MBProgressHUD showText:@"%@",error[@"error"]];
+    }];
+    
+    
+}
+
+-(void)Sendguanbi{
+    NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@/air-cleaner-ctrl",kUrl,self.IID];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userDefaults valueForKey:@"token"];
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:token forKey:@"token"];
+    //    [parameters setValue:self.classroom_id forKey:@"classroom_id"];
+    //    [parameters setValue:self.wind_speed forKey:@"wind_speed"];
+    //    [parameters setValue:self.uv_on forKey:@"uv_on"];
+    //    [parameters setValue:self.fresh_air_open forKey:@"fresh_air_open"];
+    //    [parameters setValue:self.runmodel forKey:@"run_mode"];
+    [parameters setValue:@"1" forKey:@"device_on"];
+    //    [parameters setValue:self.bid forKey:@"bid"];
+    NSLog(@"%@",parameters);
+    [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        MyLog(@"关闭净化器正确%@",responseObject);
+        
+        if ([responseObject[@"code"] intValue] !=0) {
+            NSNumber *code = responseObject[@"code"];
+            NSString *errorcode = [NSString stringWithFormat:@"%@",code];
+            if ([errorcode isEqualToString:@"4003"])  {
+                [MBProgressHUD showText:@"请重新登陆"];
+                [self newLogin];
+            }else{
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.label.text =responseObject[@"msg"];
+                [hud hideAnimated:YES afterDelay:2.f];
+            }
+        }else{
+            //            [self requestData];
+            self.autoOffBtn.enabled = NO;
+            self.autoOnBtn.enabled = YES;
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        MyLog(@"失败%@",error);
+        //        [MBProgressHUD showText:@"%@",error[@"error"]];
+    }];
+    
+    
+}
+
 -(void)requestData{
     NSString *URL = [NSString stringWithFormat:@"%@/my-equipments/%@",kUrl,self.IID];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -422,10 +572,44 @@
                 self.classroom_id = arr[@"room"][@"classroom_id"];
                 //            self.bid = dic[@"bid"];
                 self.device_on = arr[@"ctrl_data"][@"device_on"];
+                self.runmodel = arr[@"ctrl_data"][@"run_mode"];
+                NSInteger num;
+                if ([self.device_on isEqual:[NSNull null]]) {
+                    num = 1;
+                }else{
+                    num = [self.device_on integerValue];
+                }
+                if ( num==0) {
+                    self.autoOnBtn.enabled = NO;
+                    self.autoOnBtn.selected = YES;
+                }else if(num==1){
+                    self.autoOffBtn.enabled = NO;
+                    self.autoOffBtn.selected = YES;
+                }
+                NSInteger num1;
+                if ([self.runmodel isEqual:[NSNull null]]) {
+                    num1 = 1;
+                }else{
+                    num1 = [self.runmodel integerValue];
+                }
+                if ( num1==0) {
+//                    self.autoOnBtn.enabled = NO;
+                    self.autoOnBtn.selected = NO;
+                    self.autoBtn.selected = YES;
+                    self.autoOffBtn.selected = NO;
+                    self.autoBtn.enabled = NO;
+                }
+                
                 self.uv_on= arr[@"ctrl_data"][@"uv_on"];
                 self.fresh_air_open = arr[@"ctrl_data"][@"fresh_air_open"];
-                self.wenduLabel.text = [NSString stringWithFormat:@"%@",arr[@"temperature"]];
+                NSString *str = arr[@"temperature"];
+                if (str.length>0) {
+                    self.wenduLabel.text = [NSString stringWithFormat:@"%@",arr[@"temperature"]];
+                }else{
                 
+                    self.wenduLabel.text = @"";
+
+                }
                 NSNumber *wind_peed = arr[@"ctrl_data"][@"wind_speed"];
                 NSNumber *uv_on = arr[@"ctrl_data"][@"uv_on"];
                 NSNumber *fresh_air_open = arr[@"ctrl_data"][@"fresh_air_open"];
