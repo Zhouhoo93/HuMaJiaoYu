@@ -264,7 +264,7 @@
             break;
         case HeightArray:
         {
-            self.selectLb.text = @"选择年级";
+//            self.selectLb.text = @"选择年级";
 
 
             [self.array addObject:(NSArray *)self.gradeArr];
@@ -272,20 +272,20 @@
             break;
         case weightArray:
         {
-            self.selectLb.text = @"选择班级";
+//            self.selectLb.text = @"选择班级";
        
             [self.array addObject:(NSArray *)self.classArr];
         }
             break;
         case DeteArray:
         {
-            self.selectLb.text = @"选择出生日期";
+//            self.selectLb.text = @"选择出生日期";
         }
             break;
             
           case AreaArray:
         {
-            self.selectLb.text = @"选择省市区";
+//            self.selectLb.text = @"选择省市区";
             [self getAreaData];
         }
             break ;

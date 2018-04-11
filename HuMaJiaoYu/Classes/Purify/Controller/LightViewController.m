@@ -48,6 +48,9 @@
     [self requestData];
     [self requestFangan];
     [self requestqingjing];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:5 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    [timer invalidate];
     self.sliderone.textColor = [UIColor whiteColor];
     self.sliderone.textColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     
@@ -98,7 +101,9 @@
     
 
 }
-
+- (void)timerAction{
+    [self requestData];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -113,7 +118,9 @@
     //    if (value < -10.0) {
     //        s = @"❄️Brrr!⛄️";
     //    } else if (value > 29.0 && value < 50.0) {
-    s = [NSString stringWithFormat:@"当前值:%@Lx,适中", [slider.numberFormatter stringFromNumber:@(value)]];
+    NSString *str = [slider.numberFormatter stringFromNumber:@(value)];
+    CGFloat num = [str floatValue];
+    s = [NSString stringWithFormat:@"功率:%@%%", str];
     //    } else if (value >= 50.0) {
     //        s = @"I’m Melting!";
     //    }
@@ -230,11 +237,11 @@
     [parameters setValue:token forKey:@"token"];
     [parameters setValue:self.ID forKey:@"id"];
     //黑板灯
-    NSInteger hei = self.sliderone.value/10;
+    NSInteger hei = self.slidertwo.value;
     NSString *heiban = [NSString stringWithFormat:@"%d",hei];
     [parameters setValue:heiban forKey:@"bv"];
     //教室灯
-    NSInteger jiao = self.slidertwo.value/10;
+    NSInteger jiao = self.sliderone.value;
     NSString *jiaoshi = [NSString stringWithFormat:@"%d",jiao];
     [parameters setValue:jiaoshi forKey:@"cv"];
 
@@ -533,9 +540,9 @@
             sender.selected = NO;
         }else{
             sender.selected = YES;
-            self.sliderone.value = 1000;
-            self.slidertwo.value = 1000;
-            self.autoOnBtn.enabled = NO;
+            self.sliderone.value = 100;
+            self.slidertwo.value = 100;
+//            self.autoOnBtn.enabled = NO;
             self.autoOffBtn.selected = NO;
             [self SendData];
         }
@@ -555,7 +562,7 @@
             sender.selected = YES;
             self.sliderone.value = 0;
             self.slidertwo.value = 0;
-            self.autoOffBtn.enabled = NO;
+//            self.autoOffBtn.enabled = NO;
             self.autoOnBtn.selected = NO;
             [self SendData];
         }

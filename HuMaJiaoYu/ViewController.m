@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "SDCycleScrollView.h"
 #import "PurifyViewController.h"
+#import "JPUSHService.h"
 @interface ViewController ()<SDCycleScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>
 @property (nonatomic,strong)UIScrollView *bgView;
 @property (nonatomic,strong)NSArray *dataArr;
@@ -260,6 +261,88 @@
         }else{
             NSString *str = responseObject[@"data"][@"name"];
             [self.leftButton setTitle:str forState:UIControlStateNormal];
+            
+            
+           
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        MyLog(@"失败%@",error);
+        //        [MBProgressHUD showText:@"%@",error[@"error"]];
+    }];
+    
+    
+}
+
+-(void)requestData{
+    NSString *URL = [NSString stringWithFormat:@"%@/me",kUrl];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [userDefaults valueForKey:@"token"];
+    
+    [userDefaults synchronize];
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setValue:token forKey:@"token"];
+    
+    NSLog(@"%@",parameters);
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        MyLog(@"获取个人信息正确%@",responseObject);
+        NSNumber *code = responseObject[@"code"];
+        if (code !=0) {
+            
+            NSString *errorcode = [NSString stringWithFormat:@"%@",code];
+            if ([errorcode isEqualToString:@"4003"])  {
+                [MBProgressHUD showText:@"请重新登陆"];
+//                [self newLogin];
+            }else{
+                //            NSString *str = responseObject[@"msg"];
+                //            [MBProgressHUD showText:str];
+            }
+        }else{
+            if([responseObject[@"content"] isEqual:[NSNull null]])
+            {
+                
+            }else{
+                
+                
+                NSString *school_id = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"me"][@"school_id"]];
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                NSString *type = [userDefaults valueForKey:@"type"];
+                if ([type isEqualToString:@"学生"]) {
+                    NSString *classroome = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"me"][@"student"][@"classroom_id"]];
+                    NSString *str = [NSString stringWithFormat:@"school_%@_class_%@",school_id,classroome];
+                    [JPUSHService setTags:str alias:str fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
+                        NSLog(@"设置别名成功%d-------------%@,-------------%@",iResCode,iTags,iAlias);
+                    }];
+                    [JPUSHService setAlias:@"123" callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:nil];
+                }else{
+                    NSString *classroome = @"";
+                    NSString *str = [NSString stringWithFormat:@"school_%@_class_%@",school_id,classroome];
+                    [JPUSHService setTags:str alias:str fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
+                        NSLog(@"设置别名成功%d-------------%@,-------------%@",iResCode,iTags,iAlias);
+                    }];
+                    [JPUSHService setAlias:@"123" callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:nil];
+                }
+//                NSString *nameText = stuname;
+//                [self.nameBtn setTitle:nameText forState:UIControlStateNormal];
+//                NSString *tel = responseObject[@"data"][@"phone"];
+//                self.phoneLabel.text = [NSString stringWithFormat:@"手机:%@",tel];
+//                NSString *picURL = responseObject[@"data"][@"avatar"];
+//
+//                //然后就是添加照片语句，这次不是`imageWithName`了，是 imageWithData。
+//                if (![picURL.class isEqual:[NSNull class]]) {
+//                    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:picURL]];
+//                    self.touImage.image = [UIImage imageWithData:data];
+//                }else{
+//                    self.touImage.image = [UIImage imageNamed:@"moren"];
+//                }
+                
+            }
             
         }
         

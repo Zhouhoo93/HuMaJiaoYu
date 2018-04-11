@@ -13,7 +13,7 @@
 #import "PurifyModel.h"
 #import "JHPickView.h"
 #import "LoginViewController.h"
-@interface PurifyTwoViewController ()<JHPickerDelegate>
+@interface PurifyTwoViewController ()<JHPickerDelegate,UIActionSheetDelegate>
 @property (weak, nonatomic) IBOutlet UIView *buttonView;
 @property(nonatomic,strong) SEFilterControl *filter;
 @property (nonatomic,strong) LightPlanModel *lightplanModel;
@@ -40,6 +40,10 @@
     [self requestData];
     [self requestqingjing];
     [self requestFangan];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:5 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    [timer invalidate];
+    self.wenduLabel.text = self.wendu;
     self.runmodel = @"1";
     self.locationLabel.text = self.location;
     self.qingjingLabel.text = self.qingjing;
@@ -55,7 +59,9 @@
 
     // Do any additional setup after loading the view from its nib.
 }
-
+- (void)timerAction{
+    [self requestData];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -64,8 +70,13 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *type = [userDefaults valueForKey:@"type"];
     if([type isEqualToString:@"教师"]){
-        if (sender.selected) {
-            sender.selected = NO;
+        
+        UIActionSheet *actionsheet03 = [[UIActionSheet alloc] initWithTitle:@"选择模式" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"智能模式", @"手动模式", @"联网模式", nil];
+        // 显示
+        [actionsheet03 showInView:self.view];
+        
+//        if (sender.selected) {
+//            sender.selected = NO;
 //            self.UVlightONBtn.enabled = YES;
 //            self.UVLightOffBtn.enabled = YES;
 //            self.changgeOnBtn.enabled = YES;
@@ -73,10 +84,10 @@
 //            self.oneSpeedBtn.enabled = YES;
 //            self.twoSpeedBtn.enabled = YES;
 //            self.threeSpeedBtn.enabled = YES;
-            self.runmodel = @"1";
-            [self Sendauto];
-        }else{
-            sender.selected = YES;
+//            self.runmodel = @"1";
+//            [self Sendauto];
+//        }else{
+//            sender.selected = YES;
 //            self.UVlightONBtn.selected = YES;
 //            self.UVLightOffBtn.selected = NO;
 //            self.uv_on = @"1";
@@ -95,15 +106,42 @@
 //            self.oneSpeedBtn.enabled = NO;
 //            self.twoSpeedBtn.enabled = NO;
 //            self.threeSpeedBtn.enabled = NO;
-            self.runmodel = @"0";
-            [self Sendauto];
-        }
+//            self.runmodel = @"0";
+//            [self Sendauto];
+//        }
         
     }else {
         [MBProgressHUD showText:@"无权限控制"];
     }
 
 }
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"buttonIndex=%ld", buttonIndex);
+    
+    // 方法1
+        if (0 == buttonIndex)
+        {
+            NSLog(@"点击了智能按钮");
+            self.runmodel = @"0";
+            [self.autoBtn setTitle:@"智能模式" forState:UIControlStateNormal];
+        }
+        else if (1 == buttonIndex)
+        {
+            NSLog(@"点击了手动按钮");
+            self.runmodel = @"1";
+            [self.autoBtn setTitle:@"手动模式" forState:UIControlStateNormal];
+        }
+        else if (2 == buttonIndex)
+        {
+            NSLog(@"点击了联网按钮");
+            self.runmodel = @"2";
+            [self.autoBtn setTitle:@"联网模式" forState:UIControlStateNormal];
+        }
+    [self SendData];
+}
+
 - (IBAction)fanganBtnClick:(id)sender {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *type = [userDefaults valueForKey:@"type"];
@@ -312,7 +350,7 @@
         }else{
             sender.selected = YES;
             self.changgeOffBtn.selected = NO;
-            self.fresh_air_open = @"1";
+            self.fresh_air_open = @"0";
             [self SendData];
         }
         
@@ -331,7 +369,7 @@
         }else{
             sender.selected = YES;
             self.changgeOnBtn.selected = NO;
-            self.fresh_air_open = @"0";
+            self.fresh_air_open = @"1";
             [self SendData];
         }
         
@@ -361,7 +399,7 @@
 //            self.runmodel = @"0";
 //            [self SendData];
             
-            
+            self.device_on = @"1";
             [self Sendkaiqi];
         }
         
@@ -391,6 +429,7 @@
 //            self.wind_speed = @"0";
 //            self.runmodel = @"0";
 //            [self SendData];
+            self.device_on = @"0";
             [self Sendguanbi];
         }
         
@@ -574,11 +613,11 @@
                 self.device_on = arr[@"ctrl_data"][@"device_on"];
                 self.runmodel = arr[@"ctrl_data"][@"run_mode"];
                 NSInteger num;
-                if ([self.device_on isEqual:[NSNull null]]) {
-                    num = 1;
-                }else{
-                    num = [self.device_on integerValue];
-                }
+//                if ([self.device_on isEqual:[NSNull null]]) {
+//                    num = 1;
+//                }else{
+//                    num = [self.device_on integerValue];
+//                }
                 if ( num==0) {
                     self.autoOnBtn.enabled = NO;
                     self.autoOnBtn.selected = YES;
@@ -595,19 +634,19 @@
                 if ( num1==0) {
 //                    self.autoOnBtn.enabled = NO;
                     self.autoOnBtn.selected = NO;
-                    self.autoBtn.selected = YES;
+//                    self.autoBtn.selected = YES;
                     self.autoOffBtn.selected = NO;
-                    self.autoBtn.enabled = NO;
+//                    self.autoBtn.enabled = NO;
                 }
                 
                 self.uv_on= arr[@"ctrl_data"][@"uv_on"];
                 self.fresh_air_open = arr[@"ctrl_data"][@"fresh_air_open"];
                 NSString *str = arr[@"temperature"];
                 if (str.length>0) {
-                    self.wenduLabel.text = [NSString stringWithFormat:@"%@",arr[@"temperature"]];
+//                    self.wenduLabel.text = [NSString stringWithFormat:@"%@",arr[@"temperature"]];
                 }else{
                 
-                    self.wenduLabel.text = @"";
+//                    self.wenduLabel.text = @"";
 
                 }
                 NSNumber *wind_peed = arr[@"ctrl_data"][@"wind_speed"];
@@ -703,8 +742,8 @@ NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
             self.device_on = arr[@"ctrl_data"][@"device_on"];
             self.uv_on= arr[@"ctrl_data"][@"uv_on"];
             self.fresh_air_open = arr[@"ctrl_data"][@"fresh_air_open"];
-            self.wenduLabel.text = [NSString stringWithFormat:@"%@",arr[@"temperature"]];
-            
+//            self.wenduLabel.text = [NSString stringWithFormat:@"%@",arr[@"temperature"]];
+        
 //            [self.locationLabel setTitle:_model.localtion forState:UIControlStateNormal];
 //            self.statusLabel.text = _model.sence_name;
 //            self.fanganLabel.text = _model.plan_name;

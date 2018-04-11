@@ -34,4 +34,5 @@
 @property (nonatomic,copy) NSString *fresh_air_open;
 @property (nonatomic,copy) NSString *scene_id;
 @property (nonatomic,copy) NSString *plan_id;
+@property (nonatomic,copy) NSString *wendu;
 @end

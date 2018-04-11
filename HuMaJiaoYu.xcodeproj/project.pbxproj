@@ -27,7 +27,6 @@
 		382C5DA51F30AD0E00DD5361 /* LightQingJingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 382C5DA41F30AD0E00DD5361 /* LightQingJingModel.m */; };
 		383134741F258998001FA338 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 383134731F258998001FA338 /* main.m */; };
 		383134771F258998001FA338 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 383134761F258998001FA338 /* AppDelegate.m */; };
-		3831347A1F258998001FA338 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383134791F258998001FA338 /* ViewController.m */; };
 		3831347D1F258998001FA338 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3831347B1F258998001FA338 /* Main.storyboard */; };
 		3831347F1F258998001FA338 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3831347E1F258998001FA338 /* Assets.xcassets */; };
 		383134821F258998001FA338 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383134801F258998001FA338 /* LaunchScreen.storyboard */; };
@@ -234,6 +233,7 @@
 		F577F62B207DB95300C2ADA8 /* JHWaveChart.h in Sources */ = {isa = PBXBuildFile; fileRef = F577F5FC207DB91200C2ADA8 /* JHWaveChart.h */; };
 		F577F630207DB9F300C2ADA8 /* SEFilterControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F577F62C207DB9F200C2ADA8 /* SEFilterControl.m */; };
 		F577F631207DB9F300C2ADA8 /* SEFilterKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = F577F62E207DB9F200C2ADA8 /* SEFilterKnob.m */; };
+		F5B07C2C207E14E8005D1981 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B07C2B207E14E8005D1981 /* ViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -283,8 +283,6 @@
 		383134731F258998001FA338 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		383134751F258998001FA338 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		383134761F258998001FA338 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		383134781F258998001FA338 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../../../ViewController.h; sourceTree = "<group>"; };
-		383134791F258998001FA338 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ../../../ViewController.m; sourceTree = "<group>"; };
 		3831347C1F258998001FA338 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3831347E1F258998001FA338 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		383134811F258998001FA338 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -649,6 +647,8 @@
 		F577F62D207DB9F200C2ADA8 /* SEFilterKnob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEFilterKnob.h; sourceTree = "<group>"; };
 		F577F62E207DB9F200C2ADA8 /* SEFilterKnob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEFilterKnob.m; sourceTree = "<group>"; };
 		F577F62F207DB9F200C2ADA8 /* SEFilterControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEFilterControl.h; sourceTree = "<group>"; };
+		F5B07C2A207E14E7005D1981 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = HuMaJiaoYu/ViewController.h; sourceTree = SOURCE_ROOT; };
+		F5B07C2B207E14E8005D1981 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = HuMaJiaoYu/ViewController.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -796,7 +796,6 @@
 			children = (
 				38A31EF51F2842A5009F1E27 /* Purify */,
 				388F9F1B1F26EBB10079DFCE /* Notice */,
-				388F9F171F26E37D0079DFCE /* Home */,
 				383135981F25D0E2001FA338 /* Mine */,
 				383135031F25A2EB001FA338 /* Find */,
 				383134F51F2596EA001FA338 /* Login */,
@@ -1249,42 +1248,11 @@
 			path = ../../../../../JHChart;
 			sourceTree = "<group>";
 		};
-		388F9F171F26E37D0079DFCE /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				388F9F181F26E37D0079DFCE /* Controller */,
-				388F9F191F26E37D0079DFCE /* Model */,
-				388F9F1A1F26E37D0079DFCE /* View */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		388F9F181F26E37D0079DFCE /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				383134781F258998001FA338 /* ViewController.h */,
-				383134791F258998001FA338 /* ViewController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		388F9F191F26E37D0079DFCE /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		388F9F1A1F26E37D0079DFCE /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		388F9F1B1F26EBB10079DFCE /* Notice */ = {
 			isa = PBXGroup;
 			children = (
+				F5B07C2A207E14E7005D1981 /* ViewController.h */,
+				F5B07C2B207E14E8005D1981 /* ViewController.m */,
 				388F9F1C1F26EBB20079DFCE /* Controller */,
 				388F9F1D1F26EBB20079DFCE /* Model */,
 				388F9F1E1F26EBB20079DFCE /* View */,
@@ -1783,7 +1751,6 @@
 				38A60F1B1F2989CB0017EED6 /* UIColor+Hex.m in Sources */,
 				388799731F2DF47A0084F00A /* SettingViewController.m in Sources */,
 				3831354C1F25A868001FA338 /* MJPropertyType.m in Sources */,
-				3831347A1F258998001FA338 /* ViewController.m in Sources */,
 				3831359E1F25D0FC001FA338 /* MineViewController.m in Sources */,
 				3831358A1F25A870001FA338 /* MJRefreshBackNormalFooter.m in Sources */,
 				388F9F2E1F2744040079DFCE /* HSingleGlobalData.m in Sources */,
@@ -1916,6 +1883,7 @@
 				38A31F421F2897F7009F1E27 /* IQKeyboardReturnKeyHandler.m in Sources */,
 				38A60F541F29E5FB0017EED6 /* MASCompositeConstraint.m in Sources */,
 				3831358D1F25A870001FA338 /* MJRefreshNormalHeader.m in Sources */,
+				F5B07C2C207E14E8005D1981 /* ViewController.m in Sources */,
 				383134BC1F258B20001FA338 /* SDCollectionViewCell.m in Sources */,
 				383134E61F258B2D001FA338 /* SDImageCache.m in Sources */,
 				383135AC1F25F450001FA338 /* ModifyViewController.m in Sources */,

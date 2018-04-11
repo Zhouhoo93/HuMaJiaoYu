@@ -125,16 +125,18 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-//    if ([self.selectbtn.titleLabel.text isEqualToString:@"学生"]) {
-//        [parameters setValue:@"students" forKey:@"type"];
-//    }else if([self.selectbtn.titleLabel.text isEqualToString:@"家长"]){
-//        [parameters setValue:@"family" forKey:@"type"];
-//    }else{
-//        [parameters setValue:@"teacher" forKey:@"type"];
-//    }
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([self.selectbtn.titleLabel.text isEqualToString:@"学生"]) {
+        [userDefaults setValue:@"学生" forKey:@"type"];
+    }else if([self.selectbtn.titleLabel.text isEqualToString:@"家长"]){
+       [userDefaults setValue:@"家长" forKey:@"type"];
+    }else{
+        [userDefaults setValue:@"教师" forKey:@"type"];
+    }
     [parameters setValue:self.PassNameText.text forKey:@"username"];
     [parameters setValue:self.PassWordText.text forKey:@"password"];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *regis = [userDefaults valueForKey:@"registerid"];
     [parameters setValue:regis forKey:@"register_id"];
 //     [parameters setValue:@"12312312312312" forKey:@"register_id"];

@@ -41,6 +41,7 @@
 @property (nonatomic,copy) NSString *bid;
 @property (nonatomic,copy) NSString *planID;
 @property (nonatomic,copy) NSString *fangID;
+@property (nonatomic,copy) NSString *wendu;
 @end
 
 @implementation PurifyControlViewController
@@ -51,6 +52,9 @@
     [self requestData];
     [self requestqingjing];
     [self requestFangan];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:5 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    [timer invalidate];
     // Do any additional setup after loading the view from its nib.
 }
 -(void)viewDidAppear:(BOOL)animated
@@ -59,7 +63,9 @@
     self.bgscrollview.contentSize = CGSizeMake(KWidth, 650);
 }
 
-
+- (void)timerAction{
+    [self requestData];
+}
 
 - (IBAction)ManangerBtnClick:(id)sender {
     PurifyTwoViewController *vc = [[PurifyTwoViewController alloc] init];
@@ -69,6 +75,7 @@
 //    vc.classroom_id = _model.classroom_id;
 //    vc.bid = _model.bid;
     vc.IID = self.ID;
+    vc.wendu = self.wendu;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -339,26 +346,38 @@
         MyLog(@"获取净化器数据正确%@",responseObject);
 
 
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
-            NSNumber *code = responseObject[@"result"][@"errorCode"];
+        if ([responseObject[@"code"] intValue] !=0) {
+            NSNumber *code = responseObject[@"code"];
             NSString *errorcode = [NSString stringWithFormat:@"%@",code];
             if ([errorcode isEqualToString:@"4200"])  {
                 [MBProgressHUD showText:@"请重新登陆"];
                 [self newLogin];
             }else{
-            NSString *str = responseObject[@"result"][@"errorMsg"];
+            NSString *str = responseObject[@"msg"];
             [MBProgressHUD showText:str];
             }
         }else{
             NSArray *arr = responseObject[@"data"];
             if (arr.count>0) {
-                for (NSDictionary *dic in responseObject[@"data"]) {
-                    _model = [[PurifyModel alloc] initWithDictionary:dic];
-                    [self.dataArr addObject:_model];
-                }
+//                for (NSDictionary *dic in responseObject[@"data"]) {
+//                    _model = [[PurifyModel alloc] initWithDictionary:dic];
+//                    [self.dataArr addObject:_model];
+//                }
+                NSMutableDictionary *dic = responseObject[@"data"][@"recent_data"];
+                NSString *PM = [NSString stringWithFormat:@"%@",dic[@"PM"]];
+                NSString *co2_concentration = [NSString stringWithFormat:@"%@",dic[@"co2_concentration"]];
+                NSString *humidity = [NSString stringWithFormat:@"%@",dic[@"humidity"]];//shidu
+                NSString *temperature = [NSString stringWithFormat:@"%@",dic[@"temperature"]];
+                NSString *tvoc_concentration = [NSString stringWithFormat:@"%@",dic[@"tvoc_concentration"]];
+                self.wenduLabel.text = temperature;
+                self.wendu = temperature;
+                self.TVOCLabel.text = tvoc_concentration;
+                self.shiduLabel.text = humidity;
+                self.PMLabel.text = PM;
+                self.co2Label.text = co2_concentration;
 //                [self.locationLabel setTitle:_model.localtion forState:UIControlStateNormal];
-                self.statusLabel.text = _model.scene_name;
-                self.fanganLabel.text = _model.plan_name;
+//                self.statusLabel.text = _model.scene[@"name"];
+//                self.fanganLabel.text = _model.plan[@"name"];
                 //            self.fanganLabel.text =
 //                self.wenduLabel.text = [NSString stringWithFormat:@"%@℃",_model.temperature];
 //                self.TVOCLabel.text = [NSString stringWithFormat:@"%@mg/m³",_model.TVOC];
@@ -380,6 +399,8 @@
     
     
 }
+
+
 - (void)newLogin{
     [MBProgressHUD showText:@"请重新登录"];
     [self performSelector:@selector(backTo) withObject: nil afterDelay:2.0f];
