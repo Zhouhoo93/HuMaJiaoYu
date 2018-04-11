@@ -241,7 +241,7 @@
 
 
 -(void)requestFangan{
-    NSString *URL = [NSString stringWithFormat:@"%@/plans/light/all",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/plans/air-cleaner/all",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];

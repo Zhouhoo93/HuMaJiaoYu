@@ -414,7 +414,7 @@
 //    [parameters setValue:self.uv_on forKey:@"uv_on"];
 //    [parameters setValue:self.fresh_air_open forKey:@"fresh_air_open"];
 //    [parameters setValue:self.runmodel forKey:@"run_mode"];
-    [parameters setValue:@"0" forKey:@"device_on"];
+    [parameters setValue:@"1" forKey:@"device_on"];
 //    [parameters setValue:self.bid forKey:@"bid"];
     NSLog(@"%@",parameters);
     [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -510,7 +510,7 @@
     //    [parameters setValue:self.uv_on forKey:@"uv_on"];
     //    [parameters setValue:self.fresh_air_open forKey:@"fresh_air_open"];
     //    [parameters setValue:self.runmodel forKey:@"run_mode"];
-    [parameters setValue:@"1" forKey:@"device_on"];
+    [parameters setValue:@"0" forKey:@"device_on"];
     //    [parameters setValue:self.bid forKey:@"bid"];
     NSLog(@"%@",parameters);
     [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -812,7 +812,7 @@ NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
 
 
 -(void)requestFangan{
-    NSString *URL = [NSString stringWithFormat:@"%@/plans/light/all",kUrl];
+    NSString *URL = [NSString stringWithFormat:@"%@/plans/air-cleaner/all",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
