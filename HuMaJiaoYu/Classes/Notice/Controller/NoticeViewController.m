@@ -10,6 +10,7 @@
 #import "NoticeTableViewCell.h"
 #import "NoticeModel.h"
 #import "LoginViewController.h"
+#import "WebViewController.h"
 @interface NoticeViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView *table;
 @property (nonatomic,assign)int page;
@@ -232,6 +233,14 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 296;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    WebViewController *vc = [[WebViewController alloc] init];
+    _noticeModel = _dataArr[indexPath.row];
+    vc.str = _noticeModel.desc;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

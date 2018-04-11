@@ -40,6 +40,13 @@
     [self requestData];
     [self requestqingjing];
     [self requestFangan];
+    [self.changgeOnBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [self.changgeOffBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+//    [self.changgeOnBtn setBackgroundImage:[Function imageWithColor:RGB(244, 152, 71)] forState:UIControlStateNormal];
+//    [self.changgeOnBtn addTarget:self action:@selector(button1BackGroundHighlighted:) forControlEvents:UIControlEventTouchDown];
+//    [self.changgeOnBtn addTarget:self action:@selector(button1BackGroundNormal:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.changgeOffBtn addTarget:self action:@selector(button1BackGroundHighlighted1:) forControlEvents:UIControlEventTouchDown];
+//    [self.changgeOffBtn addTarget:self action:@selector(button1BackGroundNormal1:) forControlEvents:UIControlEventTouchUpInside];
     NSTimer *timer = [NSTimer timerWithTimeInterval:5 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     [timer invalidate];
@@ -59,6 +66,29 @@
 
     // Do any additional setup after loading the view from its nib.
 }
+////  button1普通状态下的背景色
+//- (void)button1BackGroundNormal:(UIButton *)sender
+//{
+//    sender.backgroundColor = [UIColor whiteColor];
+//}
+//
+////  button1高亮状态下的背景色
+//- (void)button1BackGroundHighlighted:(UIButton *)sender
+//{
+//    sender.backgroundColor = [UIColor blueColor];
+////    sender.tintColor = []
+//}
+////  button1普通状态下的背景色
+//- (void)button1BackGroundNormal1:(UIButton *)sender
+//{
+//    sender.backgroundColor = [UIColor whiteColor];
+//}
+//
+////  button1高亮状态下的背景色
+//- (void)button1BackGroundHighlighted1:(UIButton *)sender
+//{
+//    sender.backgroundColor = [UIColor blueColor];
+
 - (void)timerAction{
     [self requestData];
 }
@@ -346,10 +376,16 @@
     NSString *type = [userDefaults valueForKey:@"type"];
     if([type isEqualToString:@"教师"]){
         if (sender.selected) {
-            //        sender.selected = NO;
+                    sender.selected = NO;
+            [self.changgeOnBtn setBackgroundColor:[UIColor whiteColor]];
+            self.changgeOffBtn.selected = YES;
+            [self.changgeOnBtn setBackgroundColor:[UIColor colorWithRed:106.0/255 green:186.0/255 blue:245.0/255 alpha:1]];
         }else{
             sender.selected = YES;
+            [self.changgeOnBtn setBackgroundColor:[UIColor colorWithRed:106.0/255 green:186.0/255 blue:245.0/255 alpha:1]];
             self.changgeOffBtn.selected = NO;
+            [self.changgeOffBtn setBackgroundColor:[UIColor whiteColor]];
+//            self.changgeOffBtn.selected = NO;
             self.fresh_air_open = @"0";
             [self SendData];
         }
@@ -364,10 +400,16 @@
     NSString *type = [userDefaults valueForKey:@"type"];
     if([type isEqualToString:@"教师"]){
         if (sender.selected) {
-            //        sender.selected = NO;
+                    sender.selected = NO;
+             [self.changgeOffBtn setBackgroundColor:[UIColor whiteColor]];
+            self.changgeOnBtn.selected = YES;
+            [self.changgeOnBtn setBackgroundColor:[UIColor colorWithRed:106.0/255 green:186.0/255 blue:245.0/255 alpha:1]];
             
         }else{
             sender.selected = YES;
+            [self.changgeOffBtn setBackgroundColor:[UIColor colorWithRed:106.0/255 green:186.0/255 blue:245.0/255 alpha:1]];
+//            self.changgeOffBtn.selected = YES;
+            [self.changgeOnBtn setBackgroundColor:[UIColor whiteColor]];
             self.changgeOnBtn.selected = NO;
             self.fresh_air_open = @"1";
             [self SendData];
@@ -665,9 +707,12 @@
                 }
                 if ([_fresh_air_open isEqualToString:@"0"]) {
                     _changgeOnBtn.selected = NO;
+//                    self.changgeOffBtn.selected = NO;
+                    [self.changgeOffBtn setBackgroundColor:[UIColor colorWithRed:106.0/255 green:186.0/255 blue:245.0/255 alpha:1]];
                     _changgeOffBtn.selected = YES;
                 }else{
                     _changgeOnBtn.selected = YES;
+                    [self.changgeOnBtn setBackgroundColor:[UIColor colorWithRed:106.0/255 green:186.0/255 blue:245.0/255 alpha:1]];
                     _changgeOffBtn.selected = NO;
                 }
 

@@ -12,6 +12,7 @@
 #import "FindModel.h"
 #import "searchview.h"
 #import "searchview.h"
+#import "WebViewController.h"
 static NSString * const cellIdentifier = @"cellIdentifier";
 @interface FIndViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchResultsUpdating,UITextFieldDelegate>
 @property (nonatomic,strong)UITableView *table;
@@ -214,13 +215,13 @@ static NSString * const cellIdentifier = @"cellIdentifier";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.headerview.searchtextfield resignFirstResponder];
-//    DisViewController *vc = [[DisViewController alloc] init];
-//    vc.hidesBottomBarWhenPushed = YES;
-//    _model = _dataArr[indexPath.row];
-//    vc.ID = _model.ID;
+    WebViewController *vc = [[WebViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    _findModel = _dataArray[indexPath.row];
+    vc.str = _findModel.desc;
 //    vc.article_id = _model.ID;
 //    vc.title1 = _model.title;
-//    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController {

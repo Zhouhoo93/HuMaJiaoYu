@@ -71,7 +71,16 @@
                 
             }else{
                 
-//                NSString *stuname = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"name"]];
+                NSString *stuname = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"username"]];
+                self.userNameLabel.text = stuname;
+                NSString *familyname = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"name"]];
+                self.familyNameLabel.text = familyname;
+                NSString *stuid = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"student"][@"id"]];
+                self.studentID.text = stuid;
+                NSString *phone = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"phone"]];
+                self.phoneLabel.text = phone;
+//                NSString *phone = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"phone"]];
+                self.phoneLabel.text = phone;
 //                self.nameLabel.text = stuname;
 //                NSString *username = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"username"]];
 //                self.userNameLabel.text = username;

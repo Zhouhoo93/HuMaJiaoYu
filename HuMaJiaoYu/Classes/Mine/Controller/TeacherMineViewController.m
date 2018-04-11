@@ -35,63 +35,69 @@
     // Dispose of any resources that can be recreated.
 }
 -(void)requestData{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *type = [userDefaults valueForKey:@"type"];
-    NSString *URL = [[NSString alloc] init];
-    URL = [NSString stringWithFormat:@"%@/select-teacherinfo",kUrl];
-    
+    NSString *URL = [NSString stringWithFormat:@"%@/me",kUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [userDefaults valueForKey:@"token"];
-    NSLog(@"token:%@",token);
-    [userDefaults synchronize];
-    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
-    //    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    NSString *page = [NSString new];
-    page = @"appteacher";
-    [manager.requestSerializer  setValue:page forHTTPHeaderField:@"type"];
     
-    [manager GET:URL parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [userDefaults synchronize];
+    //    [manager.requestSerializer  setValue:token forHTTPHeaderField:@"token"];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setValue:token forKey:@"token"];
+    
+    NSLog(@"%@",parameters);
+    [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        MyLog(@"获取老师个人信息正确%@",responseObject);
-
-        if ([responseObject[@"result"][@"success"] intValue] ==0) {
+        MyLog(@"获取个人信息正确%@",responseObject);
+        
+        if ([responseObject[@"result"][@"success"] intValue] !=0) {
             NSNumber *code = responseObject[@"result"][@"errorCode"];
             NSString *errorcode = [NSString stringWithFormat:@"%@",code];
             if ([errorcode isEqualToString:@"4200"])  {
                 [MBProgressHUD showText:@"请重新登陆"];
                 [self newLogin];
             }else{
-            NSString *str = responseObject[@"result"][@"errorMsg"];
-            [MBProgressHUD showText:str];
+                NSString *str = responseObject[@"result"][@"errorMsg"];
+                [MBProgressHUD showText:str];
             }
         }else{
-//            for (NSDictionary *dic in responseObject[@"content"]) {
-//                _studentModel = [[StudentMineModel alloc] initWithDictionary:dic];
-//                [self.dataArr addObject:_studentModel];
-//            }
-//            self.userNameLabel.text = self.studentModel.username;
-//            
-//            self.sexLabel.text = _studentModel.sex;
-//            //            NSArray *dic = responseObject[@"content"][@"has_one_family"];
-//            //            NSLog(@"%@",dic);
-//            self.nameLabel.text = _studentModel.stu_name;
-//            self.gradeLabel.text =_studentModel.grade_alias;
-//            self.classLabel.text = _studentModel.class_alias;
-//            self.studentIDLabel.text = _studentModel.stu_id;
-//            self.birthdayLabel.text = _studentModel.birth;
-//            self.telphoneLabel.text = _studentModel.tel;
-//            self.addressLabel.text = _studentModel.addr;
-//            self.familyManLabel.text = _studentModel.has_one_family[@"family_name"];
-//            self.familyTelLabel.text = _studentModel.has_one_family[@"tel"];
-//            self.realationshipLabel.text = _studentModel.relationship;
-            self.usernameLabel.text = responseObject[@"content"][@"username"];
-            self.nameLabel.text = responseObject[@"content"][@"teacher_name"];
-            self.positionLabel.text = responseObject[@"content"][@"position"];
-            self.teacherIDlabel.text = responseObject[@"content"][@"teacher_id"];
-            self.emailLabel.text = responseObject[@"content"][@"email"];
-            self.phoneLabel.text = responseObject[@"content"][@"tel"];
+            if([responseObject[@"content"] isEqual:[NSNull null]])
+            {
+                
+            }else{
+                
+//                NSString *stuname = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"name"]];
+//                self.nameLabel.text = stuname;
+//                NSString *username = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"username"]];
+//                self.userNameLabel.text = username;
+//                NSNumber *i = responseObject[@"data"][@"student"][@"sex"];
+//                if ([i integerValue]==1) {
+//                    self.sexLabel.text = @"男";
+//                }else{
+//                    self.sexLabel.text = @"女";
+//                }
+//                NSString *grade_name = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"student"][@"grade_name"]];
+//                self.gradeLabel.text = grade_name;
+//                NSString *classroom_name = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"student"][@"classroom_name"]];
+//                self.classLabel.text = classroom_name;
+//                NSString *no = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"student"][@"no"]];
+//                self.studentIDLabel.text = no;
+//                NSString *birthday = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"student"][@"birthday"]];
+//                self.birthdayLabel.text = birthday;
+//                NSString *phone = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"phone"]];
+//                self.telphoneLabel.text = phone;
+//
+                self.usernameLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"username"]];
+                self.nameLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"name"]];
+                self.positionLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"teacher"][@"position"]];
+                self.teacherIDlabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"teacher"][@"id"]];
+                self.emailLabel.text = @"";
+                self.phoneLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"phone"]];
+            }
+            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

@@ -234,6 +234,8 @@
 		F577F630207DB9F300C2ADA8 /* SEFilterControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F577F62C207DB9F200C2ADA8 /* SEFilterControl.m */; };
 		F577F631207DB9F300C2ADA8 /* SEFilterKnob.m in Sources */ = {isa = PBXBuildFile; fileRef = F577F62E207DB9F200C2ADA8 /* SEFilterKnob.m */; };
 		F5B07C2C207E14E8005D1981 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B07C2B207E14E8005D1981 /* ViewController.m */; };
+		F5B07C30207E64DB005D1981 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B07C2E207E64DB005D1981 /* WebViewController.m */; };
+		F5B07C31207E64DB005D1981 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5B07C2F207E64DB005D1981 /* WebViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -649,6 +651,9 @@
 		F577F62F207DB9F200C2ADA8 /* SEFilterControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEFilterControl.h; sourceTree = "<group>"; };
 		F5B07C2A207E14E7005D1981 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = HuMaJiaoYu/ViewController.h; sourceTree = SOURCE_ROOT; };
 		F5B07C2B207E14E8005D1981 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = HuMaJiaoYu/ViewController.m; sourceTree = SOURCE_ROOT; };
+		F5B07C2D207E64DB005D1981 /* WebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		F5B07C2E207E64DB005D1981 /* WebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		F5B07C2F207E64DB005D1981 /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1267,6 +1272,9 @@
 				388F9F201F26EBCC0079DFCE /* NoticeViewController.m */,
 				388F9F221F26EC270079DFCE /* ReleaseViewController.h */,
 				388F9F231F26EC270079DFCE /* ReleaseViewController.m */,
+				F5B07C2D207E64DB005D1981 /* WebViewController.h */,
+				F5B07C2E207E64DB005D1981 /* WebViewController.m */,
+				F5B07C2F207E64DB005D1981 /* WebViewController.xib */,
 				388F9F241F26EC270079DFCE /* ReleaseViewController.xib */,
 			);
 			path = Controller;
@@ -1658,6 +1666,7 @@
 				383135AD1F25F450001FA338 /* ModifyViewController.xib in Resources */,
 				38573E621FE8B32B00C9CA69 /* WenDuLishiViewController.xib in Resources */,
 				3831352F1F25A753001FA338 /* FindTableViewCell.xib in Resources */,
+				F5B07C31207E64DB005D1981 /* WebViewController.xib in Resources */,
 				383134FD1F259746001FA338 /* LoginViewController.xib in Resources */,
 				388799741F2DF47A0084F00A /* SettingViewController.xib in Resources */,
 				3846DE191F2F20F5002D8636 /* PurifyTwoViewController.xib in Resources */,
@@ -1837,6 +1846,7 @@
 				38A31EF31F282E6F009F1E27 /* NoticeTableViewCell.m in Sources */,
 				F577F617207DB91400C2ADA8 /* JHPieItemsView.m in Sources */,
 				383134771F258998001FA338 /* AppDelegate.m in Sources */,
+				F5B07C30207E64DB005D1981 /* WebViewController.m in Sources */,
 				383135891F25A870001FA338 /* MJRefreshBackGifFooter.m in Sources */,
 				383135501F25A868001FA338 /* NSObject+MJProperty.m in Sources */,
 				383135941F25A870001FA338 /* UIView+MJExtension.m in Sources */,

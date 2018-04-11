@@ -103,27 +103,27 @@
 }
 
 - (void)setTable{
-    UIView *one = [[UIView alloc] initWithFrame:CGRectMake(0, 220, KWidth, 44)];
-    one.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:one];
+//    UIView *one = [[UIView alloc] initWithFrame:CGRectMake(0, 220, KWidth, 44)];
+//    one.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:one];
+//
+//    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 10, 100, 24)];
+//    textLabel.text = @"学校信息";
+//    textLabel.textColor = [UIColor grayColor];
+//    [one addSubview:textLabel];
+//    UIImageView *tipImage = [[UIImageView alloc] initWithFrame:CGRectMake(KWidth-20, 16, 7, 12)];
+//    tipImage.image = [UIImage imageNamed:@"个人中心三角"];
+//    [one addSubview:tipImage];
+//    UIButton *oneBtn = [[UIButton alloc] initWithFrame:CGRectMake(0,0, KWidth, 44)];
+////    [oneBtn addTarget:self action:@selector(oneBtnClick) forControlEvents:UIControlEventTouchUpInside];
+//    [one addSubview:oneBtn];
     
-    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 10, 100, 24)];
-    textLabel.text = @"学校信息";
-    textLabel.textColor = [UIColor grayColor];
-    [one addSubview:textLabel];
-    UIImageView *tipImage = [[UIImageView alloc] initWithFrame:CGRectMake(KWidth-20, 16, 7, 12)];
-    tipImage.image = [UIImage imageNamed:@"个人中心三角"];
-    [one addSubview:tipImage];
-    UIButton *oneBtn = [[UIButton alloc] initWithFrame:CGRectMake(0,0, KWidth, 44)];
-//    [oneBtn addTarget:self action:@selector(oneBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [one addSubview:oneBtn];
-    
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 264, KWidth, 20)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 220, KWidth, 64)];
     lineView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [self.view addSubview:lineView];
     
-    for (int i=0; i<3; i++) {
-        UIView *two = [[UIView alloc] initWithFrame:CGRectMake(0, 284+i*44, KWidth, 44)];
+    for (int i=0; i<1; i++) {
+        UIView *two = [[UIView alloc] initWithFrame:CGRectMake(0, 254+i*44, KWidth, 44)];
         two.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:two];
         
@@ -152,11 +152,11 @@
         }
     }
     
-    UIView *garyView = [[UIView alloc] initWithFrame:CGRectMake(0, 416, KWidth, KHeight-372)];
+    UIView *garyView = [[UIView alloc] initWithFrame:CGRectMake(0, 416-88-30, KWidth, KHeight-372+88+30)];
     garyView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [self.view addSubview:garyView];
     
-    UIButton *outLoginBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 20, KWidth-40, 34)];
+    UIButton *outLoginBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 220, KWidth-40, 34)];
     [outLoginBtn setTitle:@"退出当前账号" forState:UIControlStateNormal];
     outLoginBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [outLoginBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];

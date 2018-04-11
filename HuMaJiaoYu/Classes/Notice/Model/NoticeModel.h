@@ -17,5 +17,6 @@
 @property (nonatomic,copy) NSString *thumbnail;
 @property (nonatomic,copy) NSString *title;
 @property (nonatomic,copy) NSString *updated_at;
+@property (nonatomic,copy) NSString *data;
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end
